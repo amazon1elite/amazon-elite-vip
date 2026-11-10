@@ -756,24 +756,6 @@
         .profile-data-row span { color: var(--text-muted); font-weight: 500; }
         .profile-data-row strong { color: #fff; font-weight: 700; }
 
-        .profile-grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 4px 0;
-        }
-        .profile-grid-item {
-            background: rgba(19, 25, 33, 0.9);
-            border: 1px solid rgba(255, 153, 0, 0.2);
-            border-radius: 12px;
-            padding: 12px 4px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .profile-grid-item i { font-size: 18px; color: var(--gold-text); margin-bottom: 6px; display: block; }
-        .profile-grid-item span { font-size: 11px; font-weight: 700; color: #e2e8f0; }
-
         .menu-list-card {
             background: rgba(19, 25, 33, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -793,7 +775,7 @@
         }
         .menu-row:last-child { border-bottom: none; }
         .menu-left { display: flex; align-items: center; gap: 12px; color: #e2e8f0; font-weight: 600; }
-        .menu-left i { font-size: 15px; color: var(--gold-text); width: 20px; text-align: center; }
+        .menu-left i { font-size: 16px; width: 22px; text-align: center; }
 
         /* MODALS */
         .modal {
@@ -836,13 +818,13 @@
 </head>
 <body>
 
-    <!-- 3-SEC GLOBAL LOADER -->
+    <!-- GLOBAL LOADER -->
     <div id="loading-overlay">
         <div class="spinner"></div>
         <p style="color:#ff9900; font-weight:800; font-size:14px;">প্রসেসিং হচ্ছে, দয়া করে কিছুক্ষণ অপেক্ষা করুন...</p>
     </div>
 
-    <!-- LUXURY TOAST POPUP -->
+    <!-- TOAST POPUP -->
     <div id="toast"><i class="fa-solid fa-circle-check" style="color:#ff9900"></i> <span id="toast-txt">সফল হয়েছে!</span></div>
 
     <!-- 1ST TIME NEW USER WELCOME BONUS MODAL -->
@@ -865,6 +847,32 @@
             </div>
             <button class="btn-gold" onclick="claimWelcomeBonus()" style="font-size: 14px; padding: 12px;">
                 <i class="fa-solid fa-hand-holding-dollar"></i> বোনাস গ্রহণ করুন
+            </button>
+        </div>
+    </div>
+
+    <!-- PROFILE WELCOME GREETING MODAL -->
+    <div class="modal" id="m-profile-welcome" style="z-index: 10002;">
+        <div class="modal-box" style="text-align:center; border:2px solid var(--cyan); background:linear-gradient(180deg,#0e1a2f 0%,#090d18 100%);">
+            <button class="modal-close" onclick="closeModal('m-profile-welcome')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="width:60px;height:60px;margin:0 auto 12px;background:rgba(6,182,212,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:28px">
+                <i class="fa-solid fa-hand-sparkles"></i>
+            </div>
+            <h3 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:8px">স্বাগতম বার্তা</h3>
+            <p style="font-size:12.5px;color:#cbd5e1;line-height:1.6;margin-bottom:14px">
+                আমাদের Amazon VIP প্ল্যাটফর্মে আপনাকে আন্তরিক স্বাগতম!<br>
+                আমরা সবসময় আপনার সেবায় প্রস্তুত।
+            </p>
+            <div style="background:rgba(255,255,255,0.05);border:1px dashed rgba(6,182,212,0.4);border-radius:12px;padding:12px;margin-bottom:16px">
+                <span style="font-size:12px;color:var(--gold-text);font-weight:700;display:block;margin-bottom:6px">
+                    যে কোন প্রয়োজনে আমার সাথে যোগাযোগ করুন:
+                </span>
+                <a href="https://t.me/+z0ufJ8ZITfNhNTZl" target="_blank" style="color:#38bdf8;font-size:11.5px;font-family:'JetBrains Mono';text-decoration:none;word-break:break-all;font-weight:700">
+                    https://t.me/+z0ufJ8ZITfNhNTZl
+                </a>
+            </div>
+            <button class="btn-gold" style="background:#0088cc;color:#fff;box-shadow:0 6px 20px rgba(0,136,204,0.4)" onclick="window.open('https://t.me/+z0ufJ8ZITfNhNTZl','_blank'); closeModal('m-profile-welcome');">
+                <i class="fa-brands fa-telegram"></i> টেলিগ্রামে যোগাযোগ করুন
             </button>
         </div>
     </div>
@@ -904,7 +912,7 @@
                 <form id="f-reg" style="display:none" onsubmit="handleAuth(event,'reg')">
                     <div class="input-group">
                         <label>ইউজারনেম (ইংরেজিতে নাম)</label>
-                        <div class="input-wrap"><i class="fa-solid fa-user"></i><input type="text" id="r-name" placeholder="যেমন: Rahman" required></div>
+                        <div class="input-wrap"><i class="fa-solid fa-user"></i><input type="text" id="r-name" placeholder="যেমন: amazon" required></div>
                     </div>
                     <div class="input-group">
                         <label>মোবাইল নম্বর (একটি নম্বরে একটিই অ্যাকাউন্ট)</label>
@@ -1313,7 +1321,7 @@
             <div class="menu-list-card">
                 <div class="menu-row" onclick="openModal('m-signin')">
                     <div class="menu-left">
-                        <i class="fa-solid fa-calendar-check"></i>
+                        <i class="fa-solid fa-calendar-check" style="color:var(--gold-text)"></i>
                         <span>Daily Sign-in Task</span>
                     </div>
                     <strong style="font-size:12px;color:var(--emerald)">+৳5.00 Free <i class="fa-solid fa-chevron-right" style="margin-left:4px"></i></strong>
@@ -1321,22 +1329,29 @@
 
                 <div class="menu-row" onclick="openModal('m-notif')">
                     <div class="menu-left">
-                        <i class="fa-solid fa-chart-line"></i>
+                        <i class="fa-solid fa-chart-line" style="color:var(--gold-text)"></i>
                         <span>Income & Transactions</span>
                     </div>
                     <i class="fa-solid fa-chevron-right" style="color:var(--text-sub);font-size:11px"></i>
                 </div>
 
                 <div class="menu-row" onclick="openModal('m-pass')">
-                    <div class="menu-left"><i class="fa-solid fa-key"></i><span>Change Password</span></div>
+                    <div class="menu-left"><i class="fa-solid fa-key" style="color:var(--gold-text)"></i><span>Change Password</span></div>
                     <i class="fa-solid fa-chevron-right" style="color:var(--text-sub);font-size:11px"></i>
                 </div>
 
                 <div class="menu-row" onclick="openModal('m-pin')">
-                    <div class="menu-left"><i class="fa-solid fa-shield-halved"></i><span>Change Payment Password</span></div>
+                    <div class="menu-left"><i class="fa-solid fa-shield-halved" style="color:var(--gold-text)"></i><span>Change Payment Password</span></div>
                     <i class="fa-solid fa-chevron-right" style="color:var(--text-sub);font-size:11px"></i>
                 </div>
 
+                <!-- NEW SUPPORT OPTION (SERIAL ABOVE LIVE AGENT) -->
+                <div class="menu-row" onclick="window.open('https://t.me/+z0ufJ8ZITfNhNTZl','_blank')">
+                    <div class="menu-left"><i class="fa-brands fa-telegram" style="color:#0088cc"></i><span>Official Support</span></div>
+                    <span style="font-size:11px;color:#0088cc;font-weight:700">Contact Now <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </div>
+
+                <!-- LIVE AGENT SUPPORT (ORIGINAL LINK) -->
                 <div class="menu-row" onclick="window.open('https://t.me/amazon_matrix','_blank')">
                     <div class="menu-left"><i class="fa-solid fa-headset" style="color:#ff9900"></i><span>Live Agent Support</span></div>
                     <span style="font-size:11px;color:#ff9900;font-weight:700">Chat Now <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
@@ -1449,13 +1464,11 @@
         </div>
     </div></div>
 
-    <div class="modal" id="m-user-file"><div class="modal-box" id="m-user-file-content"></div></div>
-
     <!-- ================= JAVASCRIPT CONTROLLER ================= -->
     <script>
         const DB_PREFIX = 'AMAZON_VIP_LIVE_';
         
-        // Helper: Clean & Normalize Mobile Number (+88017... or 017 123... -> 017XXXXXXXX)
+        // Helper: Clean & Normalize Mobile Number
         function cleanPhone(raw) {
             if(!raw) return '';
             let p = raw.toString().replace(/[^0-9]/g, '');
@@ -1474,19 +1487,16 @@
             syncCloud(k, v);
         }
 
-        // OPTIONAL FIREBASE SYNC:
-        // যদি অন্য মোবাইল বা ভিজিটরদের ডেটা অ্যাডমিনের কাছে সরাসরি পেতে চান,
-        // নিচে আপনার Firebase Config যুক্ত করতে পারেন।
+        // Realtime Cloud Database Setup
         let fbDB = null;
         try {
             const firebaseConfig = {
-                // আপনার Firebase Realtime Database URL থাকলে এখানে দিন
                 databaseURL: "https://amazon-vip-live-default-rtdb.firebaseio.com"
             };
             if(!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                fbDB = firebase.database();
             }
+            fbDB = firebase.database();
         } catch(e) {
             console.log("Offline Local Mode Active");
         }
@@ -1497,15 +1507,33 @@
             }
         }
 
-        // Listen for Realtime Cloud Updates
+        // Cross-Device Realtime Listener
         if(fbDB) {
             fbDB.ref('USERS').on('value', snap => {
                 const val = snap.val();
-                if(val) localStorage.setItem(DB_PREFIX + 'USERS', JSON.stringify(val));
+                if(val) {
+                    localStorage.setItem(DB_PREFIX + 'USERS', JSON.stringify(val));
+                    if(document.getElementById('view-admin').style.display === 'flex') {
+                        renderAdminPanel();
+                    }
+                    if(currentUserPhone && val[currentUserPhone]) {
+                        syncUI();
+                    }
+                }
             });
             fbDB.ref('TRANSACTIONS').on('value', snap => {
                 const val = snap.val();
-                if(val) localStorage.setItem(DB_PREFIX + 'TRANSACTIONS', JSON.stringify(val));
+                if(val) {
+                    localStorage.setItem(DB_PREFIX + 'TRANSACTIONS', JSON.stringify(val));
+                    if(document.getElementById('view-admin').style.display === 'flex') {
+                        renderAdminPanel();
+                    }
+                    renderTxList();
+                }
+            });
+            fbDB.ref('SETTINGS').on('value', snap => {
+                const val = snap.val();
+                if(val) localStorage.setItem(DB_PREFIX + 'SETTINGS', JSON.stringify(val));
             });
         }
 
@@ -1513,7 +1541,6 @@
         let currentUserPhone = cleanPhone(localStorage.getItem(DB_PREFIX + 'CURRENT_USER') || '');
         let activeAdminTab = 'dep';
         let timerIntervals = {};
-        let adminUserSearchQuery = '';
 
         // Helper: Generate Unique 6-Digit ID Code
         function generateUniqueIdCode(usersDB) {
@@ -1524,7 +1551,7 @@
             return id;
         }
 
-        // Referral capture
+        // Capture Referral params
         const urlParams = new URLSearchParams(window.location.search);
         const refUrlParam = urlParams.get('amazon_invite') || urlParams.get('ref') || urlParams.get('inv') || '';
         if(refUrlParam) {
@@ -1538,7 +1565,7 @@
             }
         }
 
-        // Secret Admin Access (3 fast taps on Logo -> Code: 2564)
+        // Secret Admin Access (3 fast taps on Logo -> PIN: 2564)
         let logoTapCount = 0, lastTapTime = 0;
         function checkSecretAdminTap() {
             const now = Date.now();
@@ -1613,7 +1640,7 @@
         }
 
         function nav(v) {
-            if(currentUserPhone && v !== 'auth') {
+            if(currentUserPhone && v !== 'auth' && v !== 'admin') {
                 const usersDB = getDB('USERS', {});
                 if(usersDB[currentUserPhone] && usersDB[currentUserPhone].blocked) {
                     alert('⚠️ আপনার অ্যাকাউন্টটি সাময়িকভাবে স্থগিত করা হয়েছে!');
@@ -1644,6 +1671,13 @@
             if(v === 'invite') renderInvite();
             if(v === 'rank') renderRank();
             if(v === 'admin') renderAdminPanel();
+
+            // স্বাগতম পপ-আপ যখন প্রোফাইলে যাবে
+            if(v === 'profile') {
+                setTimeout(() => {
+                    openModal('m-profile-welcome');
+                }, 300);
+            }
 
             if(v === 'dashboard') {
                 const usersDB = getDB('USERS', {});
@@ -1684,9 +1718,9 @@
             if(inviteInput && pendingCode) inviteInput.value = pendingCode;
         }
 
-        // ================= নিখুঁত AUTH হ্যান্ডলার (FIXED) =================
+        // ================= নিখুঁত AUTH হ্যান্ডলার =================
         function handleAuth(e, type) {
-            e.preventDefault();
+            if(e) e.preventDefault();
             const usersDB = getDB('USERS', {});
 
             if(type === 'reg') {
@@ -1733,7 +1767,8 @@
                     blocked: false,
                     withdrawAllowed: true,
                     welcomeBonusClaimed: false,
-                    investments: {}
+                    investments: {},
+                    registeredAt: new Date().toLocaleString('en-GB')
                 };
                 setDB('USERS', usersDB);
 
@@ -1757,7 +1792,6 @@
                     return;
                 }
 
-                // যদি ইউজার রেজিস্টার না করে সরাসরি লগইন করতে চায়
                 if(!usersDB[phone]) {
                     alert('❌ এই নম্বরে কোনো অ্যাকাউন্ট তৈরি করা নেই!\nঅনুগ্রহ করে প্রথমে "রেজিস্ট্রেশন" বাটনে চাপ দিয়ে একটি নতুন অ্যাকাউন্ট খুলুন।');
                     switchAuth('reg');
@@ -1770,7 +1804,6 @@
                     return;
                 }
 
-                // পাসওয়ার্ড যাচাই
                 if(usersDB[phone].pass !== pass) {
                     alert('❌ ভুল পাসওয়ার্ড!\nআপনার দেওয়া পাসওয়ার্ডটি সঠিক নয়, অনুগ্রহ করে আবার চেষ্টা করুন।');
                     return;
@@ -1926,7 +1959,7 @@
                 document.getElementById('trx-id').value = '';
                 showToast('ডিপোজিট রিকোয়েস্ট সফল হয়েছে!');
                 setTimeout(() => nav('dashboard'), 1000);
-            }, 2000);
+            }, 1800);
         }
 
         // WITHDRAW CONTROLLER
@@ -1999,7 +2032,7 @@
                 syncUI();
                 showToast('উত্তোলন রিকোয়েস্ট জমা হয়েছে!');
                 setTimeout(() => nav('dashboard'), 1000);
-            }, 2000);
+            }, 1800);
         }
 
         // INVITE VIEW
@@ -2011,7 +2044,11 @@
             document.getElementById('ref-code').textContent = code;
             document.getElementById('ref-my-id').textContent = curUser.idCode || '000000';
             
-            const fullRefUrl = `${window.location.origin}${window.location.pathname}?amazon_invite=${encodeURIComponent(code)}`;
+            // Clean dynamic URL for GitHub Pages
+            const baseUrl = window.location.origin.includes('github.io')
+                ? 'https://amazon1elite.github.io/amazon-elite-vip/'
+                : (window.location.origin + window.location.pathname);
+            const fullRefUrl = `${baseUrl}?amazon_invite=${encodeURIComponent(code)}`;
             document.getElementById('ref-url').value = fullRefUrl;
 
             let memberCount = 0;
@@ -2181,6 +2218,7 @@
 
         function renderTxList() {
             const list = document.getElementById('tx-list');
+            if(!list) return;
             const allTx = getDB('TRANSACTIONS', []);
             const userTx = allTx.filter(x => x.userPhone === currentUserPhone);
 
@@ -2207,7 +2245,7 @@
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // ================= ADMIN CONTROLLER (FIXED DEPOSIT VIEW) =================
+        // ================= ADMIN CONTROLLER =================
         function switchAdminTab(t) {
             activeAdminTab = t;
             document.querySelectorAll('.adm-nav-btn').forEach(b => b.classList.remove('active'));
@@ -2228,18 +2266,22 @@
             const allTx = getDB('TRANSACTIONS', []);
             const settings = getDB('SETTINGS', { withdrawEnabled: true });
 
-            document.getElementById('adm-wd-status-txt').textContent = settings.withdrawEnabled ? 'GATEWAY: ACTIVE' : 'GATEWAY: DISABLED';
-            document.getElementById('adm-wd-status-txt').style.color = settings.withdrawEnabled ? 'var(--emerald)' : 'var(--rose)';
+            const admWdTxt = document.getElementById('adm-wd-status-txt');
+            if(admWdTxt) {
+                admWdTxt.textContent = settings.withdrawEnabled ? 'GATEWAY: ACTIVE' : 'GATEWAY: DISABLED';
+                admWdTxt.style.color = settings.withdrawEnabled ? 'var(--emerald)' : 'var(--rose)';
+            }
 
             const userKeys = Object.keys(usersDB);
             const pendingDep = allTx.filter(x => x.type === 'deposit' && x.status === 'pending');
             const pendingWd = allTx.filter(x => x.type === 'withdraw' && x.status === 'pending');
 
-            document.getElementById('adm-user-cnt').textContent = userKeys.length;
-            document.getElementById('adm-dep-cnt').textContent = pendingDep.length;
-            document.getElementById('adm-wd-cnt').textContent = pendingWd.length;
+            const uCnt = document.getElementById('adm-user-cnt'); if(uCnt) uCnt.textContent = userKeys.length;
+            const dCnt = document.getElementById('adm-dep-cnt'); if(dCnt) dCnt.textContent = pendingDep.length;
+            const wCnt = document.getElementById('adm-wd-cnt'); if(wCnt) wCnt.textContent = pendingWd.length;
 
             const c = document.getElementById('adm-content');
+            if(!c) return;
             c.innerHTML = '';
 
             // 1. DEPOSITS
@@ -2300,7 +2342,7 @@
                 });
             }
 
-            // 3. USERS
+            // 3. USERS (REAL-TIME COMPLETE USER DETAIL)
             if(activeAdminTab === 'users') {
                 if(!userKeys.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">কোনো ইউজার নিবন্ধিত নেই।</div>'; return; }
                 userKeys.forEach(p => {
@@ -2311,8 +2353,11 @@
                                 <strong style="color:#fff">${u.name} (ID: ${u.idCode})</strong>
                                 <span style="color:var(--emerald);font-weight:800">৳ ${u.bal.toFixed(2)}</span>
                             </div>
-                            <div style="font-size:10px;color:#94a3b8">
-                                Phone: ${u.phone} | Pass: <span style="color:var(--gold-text)">${u.pass}</span> | PIN: <span style="color:#38bdf8">${u.pin}</span>
+                            <div style="font-size:10.5px;color:#cbd5e1;line-height:1.6">
+                                <div><i class="fa-solid fa-phone" style="color:var(--gold-text)"></i> Phone: <strong>${u.phone}</strong></div>
+                                <div><i class="fa-solid fa-key" style="color:#38bdf8"></i> Login Pass: <strong style="color:var(--gold-text)">${u.pass}</strong></div>
+                                <div><i class="fa-solid fa-shield" style="color:var(--rose)"></i> Payment PIN: <strong style="color:#38bdf8">${u.pin}</strong></div>
+                                <div><i class="fa-solid fa-clock" style="color:#94a3b8"></i> Registered: ${u.registeredAt || 'N/A'}</div>
                             </div>
                         </div>`;
                 });
@@ -2347,7 +2392,8 @@
                 syncUI();
             }
         }
-function adminRejectTx(txId) {
+
+        function adminRejectTx(txId) {
             const allTx = getDB('TRANSACTIONS', []);
             const usersDB = getDB('USERS', {});
             const tx = allTx.find(x => x.id === txId);
@@ -2381,7 +2427,7 @@ function adminRejectTx(txId) {
             const savedUser = cleanPhone(localStorage.getItem(DB_PREFIX + 'CURRENT_USER') || '');
             const usersDB = getDB('USERS', {});
 
-            // রেফারেল লিংক থেকে ইনভাইট কোড ধরা
+            // রেফারেল লিংক থেকে ইনভাইট কোড অটো ইনসার্ট
             const pendingInviteCode = sessionStorage.getItem('AMZN_PENDING_REF_CODE') || '';
             if(pendingInviteCode) {
                 const inviteBox = document.getElementById('r-invite');
@@ -2403,4 +2449,4 @@ function adminRejectTx(txId) {
         };
     </script>
 </body>
-  </html>
+</html>
