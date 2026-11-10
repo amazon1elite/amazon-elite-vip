@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase Realtime Database SDK (Cross-device data synchronization) -->
+    <!-- Firebase Realtime Database SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -1500,28 +1500,40 @@
             syncCloud(k, v);
         }
 
-        // Realtime Cloud Database Setup
+        // ================================================================
+        // 🚨 আসল সেন্ট্রাল ক্লাউড ডাটাবেজ (FIREBASE) 🚨
+        // আপনার Firebase URL যুক্ত করা হলো:
+        // ================================================================
         let fbDB = null;
         try {
             const firebaseConfig = {
-                databaseURL: "https://amazon-vip-live-default-rtdb.firebaseio.com"
+                databaseURL: "https://investment-ea644-default-rtdb.firebaseio.com"
             };
             if(!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
             }
             fbDB = firebase.database();
+            console.log("Firebase Connected Successfully!");
         } catch(e) {
-            console.log("Firebase Init fallback:", e);
+            console.warn("Cloud connection error:", e);
         }
 
+        // ক্লাউডে ডাটা সিঙ্ক করার ফাংশন
         function syncCloud(key, data) {
             if(fbDB) {
-                try { fbDB.ref(key).set(data); } catch(e){}
+                try {
+                    fbDB.ref(key).set(data).catch(err => {
+                        console.error("Firebase write error:", err);
+                    });
+                } catch(e){
+                    console.error("Firebase sync exception:", e);
+                }
             }
         }
 
-        // Cross-Device Realtime Listener
+        // Cross-Device Realtime Listener (যেকোনো ফোন থেকে পরিবর্তন সাথে সাথে এখানে আসবে)
         if(fbDB) {
+            // ১. ইউজারদের তালিকা সিঙ্ক
             fbDB.ref('USERS').on('value', snap => {
                 const val = snap.val();
                 if(val) {
@@ -1533,7 +1545,9 @@
                         syncUI();
                     }
                 }
-            });
+            }, err => console.log("Firebase Users Read Error:", err));
+
+            // ২. ট্রানজেকশন (ডিপোজিট / উইথড্র) সিঙ্ক
             fbDB.ref('TRANSACTIONS').on('value', snap => {
                 const val = snap.val();
                 if(val) {
@@ -1543,7 +1557,9 @@
                     }
                     renderTxList();
                 }
-            });
+            }, err => console.log("Firebase Tx Read Error:", err));
+
+            // ৩. সেটিংস সিঙ্ক
             fbDB.ref('SETTINGS').on('value', snap => {
                 const val = snap.val();
                 if(val) localStorage.setItem(DB_PREFIX + 'SETTINGS', JSON.stringify(val));
@@ -2364,8 +2380,6 @@
                 userKeys.forEach(p => {
                     const u = usersDB[p];
                     const userTx = allTx.filter(x => x.userPhone === p);
-                    const totalDeposits = userTx.filter(x => x.type === 'deposit' && x.status === 'approved').reduce((acc, curr) => acc + (curr.amountNum || 0), 0);
-                    const totalWithdraws = userTx.filter(x => x.type === 'withdraw' && x.status === 'approved').reduce((acc, curr) => acc + (curr.amountNum || 0), 0);
 
                     c.innerHTML += `
                         <div class="admin-user-card" onclick="openUserDossier('${p}')">
