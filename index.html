@@ -187,6 +187,22 @@
             transition: 0.2s;
         }
 
+        .lang-toggle-btn {
+            background: rgba(255, 153, 0, 0.12);
+            border: 1px solid var(--gold-text);
+            padding: 4px 9px;
+            border-radius: 16px;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+        .lang-toggle-btn:active { transform: scale(0.92); }
+
         /* BOTTOM NAVBAR */
         .bottom-nav {
             position: fixed;
@@ -618,6 +634,7 @@
             gap: 8px;
             cursor: pointer;
             transition: 0.2s;
+            user-select: none;
         }
         .admin-user-card:hover {
             border-color: rgba(255, 153, 0, 0.5);
@@ -1018,9 +1035,14 @@
         <div id="view-dashboard" class="view">
             <div class="top-navbar" style="margin:-16px -16px 0 -16px">
                 <div class="amazon-brand-logo" id="main-secret-logo" onclick="checkSecretAdminTap()">
-                    <i class="fa-brands fa-amazon"></i> <span>Amazon</span>
+                    <i class="fa-brands fa-amazon"></i> <span id="dash-brand-title">Amazon</span>
                 </div>
-                <div style="display:flex;align-items:center;gap:8px">
+                <div style="display:flex;align-items:center;gap:6px">
+                    <!-- LANGUAGE TOGGLE BUTTON (DEFAULT: ENGLISH) -->
+                    <button class="lang-toggle-btn" onclick="toggleLanguage()" title="Switch Language">
+                        <i class="fa-solid fa-globe"></i>
+                        <span id="lang-indicator">EN</span>
+                    </button>
                     <div class="wallet-pill" onclick="nav('deposit-select')"><i class="fa-solid fa-wallet"></i> <span class="u-bal">৳ 0.00</span></div>
                     <button class="back-btn" onclick="openModal('m-notif')"><i class="fa-solid fa-bell"></i></button>
                 </div>
@@ -1035,18 +1057,18 @@
 
             <div class="ticker">
                 <i class="fa-solid fa-bullhorn" style="color:var(--gold-text)"></i>
-                <p>Welcome to Amazon VIP Platform! Earn verified guaranteed e-commerce staking profits daily.</p>
+                <p id="dash-ticker-txt">Welcome to Amazon VIP Platform! Earn verified guaranteed e-commerce staking profits daily.</p>
             </div>
 
             <div class="action-grid">
                 <div class="act-card" onclick="nav('deposit-select')">
-                    <i class="fa-solid fa-wallet"></i><span>Deposit</span>
+                    <i class="fa-solid fa-wallet"></i><span id="act-btn-dep">Deposit</span>
                 </div>
                 <div class="act-card" onclick="nav('withdraw')">
-                    <i class="fa-solid fa-arrow-up-from-bracket"></i><span>Withdraw</span>
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i><span id="act-btn-wd">Withdraw</span>
                 </div>
                 <div class="act-card" onclick="nav('invite')">
-                    <i class="fa-solid fa-users"></i><span>Team</span>
+                    <i class="fa-solid fa-users"></i><span id="act-btn-team">Team</span>
                 </div>
             </div>
 
@@ -1057,13 +1079,13 @@
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div>
-                        <h5 style="font-size:12.5px; font-weight:800; color:#fff;">FLASH SALE: ৳20 DISCOUNT ON ALL PRODUCTS!</h5>
-                        <p style="font-size:10px; color:#cbd5e1; margin-top:2px;">Offer expires in: <strong id="global-timer-txt" style="color:var(--gold-text); font-family:'JetBrains Mono';">48:00:00</strong></p>
+                        <h5 id="flash-sale-title" style="font-size:12.5px; font-weight:800; color:#fff;">FLASH SALE: ৳20 DISCOUNT ON ALL PRODUCTS!</h5>
+                        <p style="font-size:10px; color:#cbd5e1; margin-top:2px;"><span id="flash-sale-sub">Offer expires in:</span> <strong id="global-timer-txt" style="color:var(--gold-text); font-family:'JetBrains Mono';">48:00:00</strong></p>
                     </div>
                 </div>
             </div>
 
-            <div class="box-title"><i class="fa-solid fa-boxes-packing"></i> VIP Product Staking & Profit</div>
+            <div class="box-title"><i class="fa-solid fa-boxes-packing"></i> <span id="dash-sec-title">VIP Product Staking & Profit</span></div>
 
             <!-- DYNAMIC PRODUCT CONTAINER -->
             <div id="products-container"></div>
@@ -1307,7 +1329,7 @@
                 </div>
 
                 <div class="menu-row" onclick="openModal('m-pin')">
-                    <div class="menu-left"><i class="fa-solid fa-shield-halved" style="color:var(--gold-text)"></i><span>Change Payment Password</span></div>
+                    <div class="menu-left"><i class="fa-solid fa-shield-halved" style="color:var(--gold-text)"></i><span>Change Payment PIN</span></div>
                     <i class="fa-solid fa-chevron-right" style="color:var(--text-sub);font-size:11px"></i>
                 </div>
 
@@ -1451,11 +1473,17 @@
 
         // Local Database Operations
         function getDB(k, d) {
-            const v = localStorage.getItem(DB_PREFIX + k);
-            return v ? JSON.parse(v) : d;
+            try {
+                const v = localStorage.getItem(DB_PREFIX + k);
+                return v ? JSON.parse(v) : d;
+            } catch(e) {
+                return d;
+            }
         }
         function setDB(k, v) {
-            localStorage.setItem(DB_PREFIX + k, JSON.stringify(v));
+            try {
+                localStorage.setItem(DB_PREFIX + k, JSON.stringify(v));
+            } catch(e){}
             syncCloud(k, v);
         }
 
@@ -1518,6 +1546,49 @@
             });
         }
 
+        // ================= LANGUAGE TOGGLE SYSTEM =================
+        // Default language is English. Users can switch to Bengali anytime.
+        let currentLang = localStorage.getItem(DB_PREFIX + 'LANG') || 'EN';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'EN' ? 'BN' : 'EN';
+            localStorage.setItem(DB_PREFIX + 'LANG', currentLang);
+            updateLanguageUI();
+            showToast(currentLang === 'BN' ? 'ভাষা বাংলায় পরিবর্তন করা হয়েছে' : 'Language switched to English');
+        }
+
+        function updateLanguageUI() {
+            const ind = document.getElementById('lang-indicator');
+            if(ind) ind.textContent = currentLang;
+
+            const ticker = document.getElementById('dash-ticker-txt');
+            const bDep = document.getElementById('act-btn-dep');
+            const bWd = document.getElementById('act-btn-wd');
+            const bTeam = document.getElementById('act-btn-team');
+            const fsTitle = document.getElementById('flash-sale-title');
+            const fsSub = document.getElementById('flash-sale-sub');
+            const secTitle = document.getElementById('dash-sec-title');
+
+            if(currentLang === 'BN') {
+                if(ticker) ticker.textContent = 'Amazon VIP প্ল্যাটফর্মে স্বাগতম! প্রতিদিন ভেরিফায়েড ই-কমার্স স্টকিংয়ের মাধ্যমে নিশ্চিত প্রফিট নিন।';
+                if(bDep) bDep.textContent = 'রিচার্জ';
+                if(bWd) bWd.textContent = 'উত্তোলন';
+                if(bTeam) bTeam.textContent = 'টিম';
+                if(fsTitle) fsTitle.textContent = 'ধামাকা অফার: প্রতিটি পণ্যে ২০ টাকা ছাড়!';
+                if(fsSub) fsSub.textContent = 'অফার শেষ হতে বাকি:';
+                if(secTitle) secTitle.textContent = 'VIP পণ্য স্টকিং ও প্রফিট';
+            } else {
+                if(ticker) ticker.textContent = 'Welcome to Amazon VIP Platform! Earn verified guaranteed e-commerce staking profits daily.';
+                if(bDep) bDep.textContent = 'Deposit';
+                if(bWd) bWd.textContent = 'Withdraw';
+                if(bTeam) bTeam.textContent = 'Team';
+                if(fsTitle) fsTitle.textContent = 'FLASH SALE: ৳20 DISCOUNT ON ALL PRODUCTS!';
+                if(fsSub) fsSub.textContent = 'Offer expires in:';
+                if(secTitle) secTitle.textContent = 'VIP Product Staking & Profit';
+            }
+            renderProducts();
+        }
+
         // 48-Hour Special Discount Engine (20 Tk Off on All Products)
         const DISCOUNT_DURATION_MS = 48 * 60 * 60 * 1000;
         function getDiscountInfo() {
@@ -1552,7 +1623,7 @@
             let id;
             do {
                 id = Math.floor(100000 + Math.random() * 900000).toString();
-            } while (Object.values(usersDB).some(u => u.idCode === id));
+            } while (Object.values(usersDB).some(u => u && u.idCode === id));
             return id;
         }
 
@@ -1563,7 +1634,7 @@
             sessionStorage.setItem('AMZN_PENDING_REF_CODE', refUrlParam);
             const usersDB = getDB('USERS', {});
             for(let ph in usersDB) {
-                if(usersDB[ph].inviteCode === refUrlParam || usersDB[ph].idCode === refUrlParam || ph === refUrlParam) {
+                if(usersDB[ph] && (usersDB[ph].inviteCode === refUrlParam || usersDB[ph].idCode === refUrlParam || ph === refUrlParam)) {
                     sessionStorage.setItem('AMZN_PENDING_REF_LEADER', ph);
                     break;
                 }
@@ -1625,17 +1696,18 @@
             const curUser = usersDB[currentUserPhone];
             if(!curUser) return;
 
-            const bal = curUser.bal || 0.00;
+            const bal = Number(curUser.bal || 0);
             const f = `৳ ${bal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
             document.querySelectorAll('.u-bal').forEach(el => el.textContent = f);
 
-            const uProfileName = document.getElementById('u-profile-name'); if(uProfileName) uProfileName.textContent = curUser.name;
-            const refCardName = document.getElementById('ref-card-name'); if(refCardName) refCardName.textContent = curUser.name;
+            const uProfileName = document.getElementById('u-profile-name'); if(uProfileName) uProfileName.textContent = curUser.name || 'User';
+            const refCardName = document.getElementById('ref-card-name'); if(refCardName) refCardName.textContent = curUser.name || 'VIP Member';
             const uDisplayId = document.getElementById('u-display-id'); if(uDisplayId) uDisplayId.textContent = curUser.idCode || '000000';
             const refMyId = document.getElementById('ref-my-id'); if(refMyId) refMyId.textContent = curUser.idCode || '000000';
             
             const vip = document.getElementById('u-vip');
-            const keys = Object.keys(curUser.investments || {});
+            const inv = curUser.investments || {};
+            const keys = Object.keys(inv).filter(k => inv[k]);
             if(vip) {
                 vip.textContent = keys.length ? `VIP Level ${keys[keys.length - 1]}` : 'Member (VIP 0)';
                 vip.style.color = keys.length ? 'var(--emerald)' : '#ff9900';
@@ -1689,7 +1761,6 @@
                 if(curUser && curUser.welcomeBonusClaimed === false) {
                     setTimeout(() => { openModal('m-welcome'); }, 400);
                 } else if(curUser) {
-                    // Show stylish Event Notice on Dashboard
                     setTimeout(() => { openModal('m-event-notice'); }, 450);
                 }
             }
@@ -1698,13 +1769,13 @@
             window.scrollTo(0,0);
         }
 
-        // WELCOME BONUS (UPDATED TO 100 TK)
+        // WELCOME BONUS (100 TK)
         function claimWelcomeBonus() {
             const usersDB = getDB('USERS', {});
             const curUser = usersDB[currentUserPhone];
             if(!curUser) return;
 
-            curUser.bal = +(curUser.bal + 100.00).toFixed(2);
+            curUser.bal = +(Number(curUser.bal || 0) + 100.00).toFixed(2);
             curUser.welcomeBonusClaimed = true;
             usersDB[currentUserPhone] = curUser;
             setDB('USERS', usersDB);
@@ -1714,7 +1785,6 @@
             syncUI();
             showToast('🎉 Congratulations! ৳100.00 Welcome Reward added to your balance!');
 
-            // Open Event Modal next
             setTimeout(() => {
                 openModal('m-event-notice');
             }, 600);
@@ -1757,7 +1827,7 @@
                 let refLeader = sessionStorage.getItem('AMZN_PENDING_REF_LEADER') || '';
                 if(!refLeader && inviteCodeInput) {
                     for(let ph in usersDB) {
-                        if(usersDB[ph].inviteCode === inviteCodeInput || usersDB[ph].idCode === inviteCodeInput || ph === inviteCodeInput) {
+                        if(usersDB[ph] && (usersDB[ph].inviteCode === inviteCodeInput || usersDB[ph].idCode === inviteCodeInput || ph === inviteCodeInput)) {
                             refLeader = ph;
                             break;
                         }
@@ -1834,7 +1904,7 @@
             switchAuth('login');
         }
 
-        // PRODUCTS LIST (ORIGINAL BASE PRICES & PROFITS)
+        // PRODUCTS LIST
         const PRODUCTS_LIST = [
             { id: 1, vip: 'VIP 1', name: 'Amazon Echo Dot', price: 450, profit: 49, rate: '10.88%', total365: '৳17,885', img: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=150&q=80' },
             { id: 2, vip: 'VIP 2', name: 'Amazon Fire TV Stick', price: 900, profit: 121, rate: '13.44%', total365: '৳44,165', img: 'https://images.unsplash.com/photo-1507646227500-4d389b0012be?w=150&q=80' },
@@ -1916,7 +1986,7 @@
             const disc = getDiscountInfo();
             const currentBuyPrice = disc.isActive ? (p.price - 20) : p.price;
 
-            if(curUser.bal < currentBuyPrice) {
+            if(Number(curUser.bal || 0) < currentBuyPrice) {
                 showToast(`⚠️ Insufficient balance! Please deposit ৳${currentBuyPrice}.`);
                 document.getElementById('dep-val').value = currentBuyPrice;
                 nav('deposit-select');
@@ -1924,7 +1994,7 @@
             }
 
             if(confirm(`Do you wish to stake "${p.name}" for ৳${currentBuyPrice}?`)) {
-                curUser.bal = +(curUser.bal - currentBuyPrice).toFixed(2);
+                curUser.bal = +(Number(curUser.bal || 0) - currentBuyPrice).toFixed(2);
                 if(!curUser.investments) curUser.investments = {};
                 curUser.investments[id] = { 
                     name: p.name, 
@@ -1952,14 +2022,14 @@
                 return;
             }
 
-            curUser.bal = +(curUser.bal + p.profit).toFixed(2);
+            curUser.bal = +(Number(curUser.bal || 0) + p.profit).toFixed(2);
             p.exp = Date.now() + 24*3600*1000;
             addTx('profit', `Daily Profit (${p.name})`, `+ ৳${p.profit}`, 'approved');
 
             if(curUser.leader && usersDB[curUser.leader]) {
                 const commission = +(p.profit * 0.15).toFixed(2);
                 if(commission > 0) {
-                    usersDB[curUser.leader].bal = +(usersDB[curUser.leader].bal + commission).toFixed(2);
+                    usersDB[curUser.leader].bal = +(Number(usersDB[curUser.leader].bal || 0) + commission).toFixed(2);
                     addSpecificTx(curUser.leader, 'commission', `Referral Commission 15% (ID: ${curUser.idCode})`, `+ ৳${commission}`, 'approved');
                 }
             }
@@ -1979,7 +2049,6 @@
             if(timerIntervals[id]) clearInterval(timerIntervals[id]);
             const p = curUser.investments[id];
 
-            // If suspended by admin
             if(p.status === 'paused') {
                 wrap.innerHTML = `<div style="background:rgba(244,63,94,0.15);color:var(--rose);border:1px solid rgba(244,63,94,0.3);padding:9px;border-radius:10px;text-align:center;font-size:11px;font-weight:700"><i class="fa-solid fa-circle-pause"></i> Staking Suspended by Admin</div>`;
                 return;
@@ -2103,14 +2172,14 @@
 
             if(!acc || acc.length < 11) { alert('Please enter a valid 11-digit bKash Personal number.'); return; }
             if(!a || a < 150) { alert('Minimum withdrawal amount is ৳ 150.'); return; }
-            if(a > curUser.bal) { alert('Insufficient balance in your account!'); return; }
+            if(a > Number(curUser.bal || 0)) { alert('Insufficient balance in your account!'); return; }
             if(pin !== curUser.pin) { alert('Incorrect payment PIN!'); return; }
 
             document.getElementById('loading-overlay').style.display = 'flex';
             setTimeout(() => {
                 document.getElementById('loading-overlay').style.display = 'none';
 
-                curUser.bal = +(curUser.bal - a).toFixed(2);
+                curUser.bal = +(Number(curUser.bal || 0) - a).toFixed(2);
                 usersDB[currentUserPhone] = curUser;
                 setDB('USERS', usersDB);
 
@@ -2146,13 +2215,13 @@
             teamListWrap.innerHTML = '';
 
             for(let p in usersDB) {
-                if(usersDB[p].leader === currentUserPhone) {
+                if(usersDB[p] && usersDB[p].leader === currentUserPhone) {
                     memberCount++;
                     const hasProduct = usersDB[p].investments && Object.keys(usersDB[p].investments).length > 0;
                     teamListWrap.innerHTML += `
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
                             <div style="text-align:left">
-                                <span style="color:#fff;font-weight:700;font-size:12px">${usersDB[p].name}</span>
+                                <span style="color:#fff;font-weight:700;font-size:12px">${usersDB[p].name || 'Member'}</span>
                                 <span style="display:block;font-size:10px;color:var(--cyan);font-family:'JetBrains Mono'">ID: ${usersDB[p].idCode || '000000'}</span>
                             </div>
                             <strong style="font-size:11px;color:${hasProduct ? 'var(--emerald)' : 'var(--text-muted)'}">${hasProduct ? 'Active VIP' : 'Inactive'}</strong>
@@ -2183,7 +2252,7 @@
             const usersDB = getDB('USERS', {});
             let activeCount = 0;
             for(let p in usersDB) {
-                if(usersDB[p].leader === currentUserPhone) {
+                if(usersDB[p] && usersDB[p].leader === currentUserPhone) {
                     if(usersDB[p].investments && Object.keys(usersDB[p].investments).length > 0) activeCount++;
                 }
             }
@@ -2227,7 +2296,7 @@
             setDB('CLAIMED_RANKS_' + currentUserPhone, claimed);
 
             const usersDB = getDB('USERS', {});
-            usersDB[currentUserPhone].bal = +(usersDB[currentUserPhone].bal + bonus).toFixed(2);
+            usersDB[currentUserPhone].bal = +(Number(usersDB[currentUserPhone].bal || 0) + bonus).toFixed(2);
             setDB('USERS', usersDB);
 
             addTx('rank', `Rank Milestone Reward (${req} Active Members)`, `+ ৳${bonus}.00`, 'approved');
@@ -2246,7 +2315,7 @@
             }
 
             const usersDB = getDB('USERS', {});
-            usersDB[currentUserPhone].bal = +(usersDB[currentUserPhone].bal + 5).toFixed(2);
+            usersDB[currentUserPhone].bal = +(Number(usersDB[currentUserPhone].bal || 0) + 5).toFixed(2);
             setDB('USERS', usersDB);
             localStorage.setItem(DB_PREFIX + 'LAST_SIGNIN_' + currentUserPhone, today);
 
@@ -2384,7 +2453,7 @@
                     depTx = depTx.filter(d => {
                         const u = usersDB[d.userPhone] || {};
                         return (u.name && u.name.toLowerCase().includes(query)) ||
-                               d.userPhone.includes(query) ||
+                               (d.userPhone && d.userPhone.includes(query)) ||
                                (d.trxId && d.trxId.toLowerCase().includes(query)) ||
                                (u.idCode && u.idCode.includes(query));
                     });
@@ -2422,7 +2491,7 @@
                     wdTx = wdTx.filter(w => {
                         const u = usersDB[w.userPhone] || {};
                         return (u.name && u.name.toLowerCase().includes(query)) ||
-                               w.userPhone.includes(query) ||
+                               (w.userPhone && w.userPhone.includes(query)) ||
                                (w.targetNum && w.targetNum.includes(query)) ||
                                (u.idCode && u.idCode.includes(query));
                     });
@@ -2459,7 +2528,9 @@
                 if(query) {
                     filteredKeys = userKeys.filter(p => {
                         const u = usersDB[p];
+                        if(!u) return false;
                         return (u.name && u.name.toLowerCase().includes(query)) ||
+                               (u.phone && u.phone.includes(query)) ||
                                p.includes(query) ||
                                (u.idCode && u.idCode.includes(query));
                     });
@@ -2470,14 +2541,15 @@
                 c.innerHTML += `<div style="font-size:11px;color:var(--gold-text);margin-bottom:8px;text-align:center;">✦ Tap any user to view file, manage products & permissions ✦</div>`;
 
                 filteredKeys.forEach(p => {
-                    const u = usersDB[p];
+                    const u = usersDB[p] || {};
                     const isWdOk = u.withdrawAllowed !== false;
-                    const prodCount = u.investments ? Object.keys(u.investments).length : 0;
+                    const prodCount = (u.investments && typeof u.investments === 'object') ? Object.keys(u.investments).filter(k => u.investments[k]).length : 0;
+                    const safeKey = String(p).replace(/['"]/g, '');
 
                     c.innerHTML += `
-                        <div class="admin-user-card" onclick="openUserDossier('${p}')">
+                        <div class="admin-user-card" onclick="openUserDossier('${safeKey}')">
                             <div class="admin-user-row">
-                                <strong style="color:#fff;font-size:13px"><i class="fa-solid fa-folder-open" style="color:var(--gold-text);margin-right:6px"></i> ${u.name}</strong>
+                                <strong style="color:#fff;font-size:13px"><i class="fa-solid fa-folder-open" style="color:var(--gold-text);margin-right:6px"></i> ${u.name || 'User'}</strong>
                                 <div>
                                     <span class="adm-badge" style="background:rgba(255,153,0,0.15);color:#ff9900;border:1px solid rgba(255,153,0,0.3);margin-right:4px;">PROD: ${prodCount}</span>
                                     <span class="adm-badge ${isWdOk ? 'adm-badge-active' : 'adm-badge-blocked'}" style="margin-right:4px;">WD: ${isWdOk ? 'ON' : 'OFF'}</span>
@@ -2485,11 +2557,11 @@
                                 </div>
                             </div>
                             <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:4px">
-                                <span>ID: <strong style="color:#38bdf8;font-family:'JetBrains Mono'">${u.idCode}</strong></span>
+                                <span>ID: <strong style="color:#38bdf8;font-family:'JetBrains Mono'">${u.idCode || '000000'}</strong></span>
                                 <span>Balance: <strong style="color:var(--gold-text)">৳ ${Number(u.bal || 0).toFixed(2)}</strong></span>
                             </div>
                             <div style="font-size:10px;color:#94a3b8;border-top:1px dashed rgba(255,255,255,0.08);padding-top:6px;margin-top:2px;display:flex;justify-content:space-between">
-                                <span>Phone: ${u.phone}</span>
+                                <span>Phone: ${u.phone || p}</span>
                                 <span style="color:var(--cyan)">Tap to manage &rarr;</span>
                             </div>
                         </div>`;
@@ -2497,140 +2569,170 @@
             }
         }
 
-        // ================= USER DOSSIER (INDIVIDUAL FILE) =================
-        function openUserDossier(phone) {
-            const usersDB = getDB('USERS', {});
-            const allTx = getDB('TRANSACTIONS', []);
-            const u = usersDB[phone];
-            if(!u) return;
+        // ================= USER DOSSIER (INDIVIDUAL FILE) - CRASH-PROOF & FIXED =================
+        function openUserDossier(phoneKey) {
+            try {
+                const usersDB = getDB('USERS', {});
+                const allTx = getDB('TRANSACTIONS', []);
 
-            const isWdAllowed = u.withdrawAllowed !== false;
-            const userTx = allTx.filter(x => x.userPhone === phone);
-            const userDeposits = userTx.filter(x => x.type === 'deposit');
-            const userWithdraws = userTx.filter(x => x.type === 'withdraw');
+                // Find user by key or phone
+                let u = usersDB[phoneKey];
+                let actualPhone = phoneKey;
 
-            let depHtml = '';
-            if(!userDeposits.length) {
-                depHtml = '<div style="font-size:10px;color:#94a3b8">No deposit records.</div>';
-            } else {
-                userDeposits.forEach(d => {
-                    depHtml += `
-                        <div style="background:#090e1a;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-size:10px;border-left:2px solid var(--emerald)">
-                            <div style="display:flex;justify-content:space-between">
-                                <strong style="color:#34d399">${d.amount}</strong>
-                                <span style="color:#cbd5e1">${d.date} (${d.time})</span>
+                if(!u) {
+                    for(let k in usersDB) {
+                        if(usersDB[k] && (usersDB[k].phone === phoneKey || k === cleanPhone(phoneKey))) {
+                            u = usersDB[k];
+                            actualPhone = k;
+                            break;
+                        }
+                    }
+                }
+
+                if(!u) {
+                    alert('User record could not be found!');
+                    return;
+                }
+
+                const userPhoneNum = u.phone || actualPhone;
+                const isWdAllowed = u.withdrawAllowed !== false;
+
+                const userTx = Array.isArray(allTx) ? allTx.filter(x => x && (x.userPhone === userPhoneNum || x.userPhone === actualPhone)) : [];
+                const userDeposits = userTx.filter(x => x && x.type === 'deposit');
+                const userWithdraws = userTx.filter(x => x && x.type === 'withdraw');
+
+                let depHtml = '';
+                if(!userDeposits.length) {
+                    depHtml = '<div style="font-size:10px;color:#94a3b8">No deposit records.</div>';
+                } else {
+                    userDeposits.forEach(d => {
+                        depHtml += `
+                            <div style="background:#090e1a;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-size:10px;border-left:2px solid var(--emerald)">
+                                <div style="display:flex;justify-content:space-between">
+                                    <strong style="color:#34d399">${d.amount || '0'}</strong>
+                                    <span style="color:#cbd5e1">${d.date || ''} (${d.time || ''})</span>
+                                </div>
+                                <div style="color:#94a3b8;font-size:9px">TrxID: ${d.trxId || 'N/A'} | Status: <strong>${(d.status || '').toUpperCase()}</strong></div>
+                            </div>`;
+                    });
+                }
+
+                let wdHtml = '';
+                if(!userWithdraws.length) {
+                    wdHtml = '<div style="font-size:10px;color:#94a3b8">No withdrawal records.</div>';
+                } else {
+                    userWithdraws.forEach(w => {
+                        wdHtml += `
+                            <div style="background:#090e1a;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-size:10px;border-left:2px solid var(--rose)">
+                                <div style="display:flex;justify-content:space-between">
+                                    <strong style="color:var(--rose)">${w.amount || '0'}</strong>
+                                    <span style="color:#cbd5e1">${w.date || ''} (${w.time || ''})</span>
+                                </div>
+                                <div style="color:#94a3b8;font-size:9px">bKash: ${w.targetNum || 'N/A'} | Status: <strong>${(w.status || '').toUpperCase()}</strong></div>
+                            </div>`;
+                    });
+                }
+
+                // Staked Products List and Management (Safe iteration over objects or arrays with nulls)
+                let productsHtml = '';
+                let validProductCount = 0;
+
+                if(u.investments && typeof u.investments === 'object') {
+                    const invKeys = Object.keys(u.investments);
+                    invKeys.forEach(pId => {
+                        const prod = u.investments[pId];
+                        if(!prod || typeof prod !== 'object') return; // Skip nulls in array
+                        validProductCount++;
+                        const isProdActive = prod.status !== 'paused';
+                        productsHtml += `
+                            <div style="background:#090e1a;padding:8px 10px;border-radius:8px;margin-bottom:6px;font-size:11px;border:1px solid rgba(255,153,0,0.2);display:flex;justify-content:space-between;align-items:center;">
+                                <div>
+                                    <strong style="color:#fff;display:block;">${prod.name || ('Product #' + pId)}</strong>
+                                    <span style="font-size:9.5px;color:#94a3b8;">Daily: ৳${prod.profit || 0} | Status: <strong style="color:${isProdActive ? 'var(--emerald)' : 'var(--rose)'}">${isProdActive ? 'ACTIVE' : 'PAUSED'}</strong></span>
+                                </div>
+                                <button class="adm-btn-toggle" style="background:${isProdActive ? '#e11d48' : 'var(--emerald)'};color:#fff;padding:5px 10px;font-size:9.5px;" onclick="adminToggleProduct('${actualPhone}', '${pId}')">
+                                    <i class="fa-solid fa-power-off"></i> ${isProdActive ? 'Pause' : 'Activate'}
+                                </button>
                             </div>
-                            <div style="color:#94a3b8;font-size:9px">TrxID: ${d.trxId || 'N/A'} | Status: <strong>${d.status.toUpperCase()}</strong></div>
-                        </div>`;
-                });
-            }
+                        `;
+                    });
+                }
 
-            let wdHtml = '';
-            if(!userWithdraws.length) {
-                wdHtml = '<div style="font-size:10px;color:#94a3b8">No withdrawal records.</div>';
-            } else {
-                userWithdraws.forEach(w => {
-                    wdHtml += `
-                        <div style="background:#090e1a;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-size:10px;border-left:2px solid var(--rose)">
-                            <div style="display:flex;justify-content:space-between">
-                                <strong style="color:var(--rose)">${w.amount}</strong>
-                                <span style="color:#cbd5e1">${w.date} (${w.time})</span>
-                            </div>
-                            <div style="color:#94a3b8;font-size:9px">bKash: ${w.targetNum || 'N/A'} | Status: <strong>${w.status.toUpperCase()}</strong></div>
-                        </div>`;
-                });
-            }
+                if(!validProductCount) {
+                    productsHtml = '<div style="font-size:10px;color:#94a3b8">No purchased products yet.</div>';
+                }
 
-            // Staked Products List and Management
-            let productsHtml = '';
-            const invKeys = u.investments ? Object.keys(u.investments) : [];
-            if(!invKeys.length) {
-                productsHtml = '<div style="font-size:10px;color:#94a3b8">No purchased products yet.</div>';
-            } else {
-                invKeys.forEach(pId => {
-                    const prod = u.investments[pId];
-                    const isProdActive = prod.status !== 'paused';
-                    productsHtml += `
-                        <div style="background:#090e1a;padding:8px 10px;border-radius:8px;margin-bottom:6px;font-size:11px;border:1px solid rgba(255,153,0,0.2);display:flex;justify-content:space-between;align-items:center;">
-                            <div>
-                                <strong style="color:#fff;display:block;">${prod.name || ('Product #' + pId)}</strong>
-                                <span style="font-size:9.5px;color:#94a3b8;">Daily: ৳${prod.profit} | Status: <strong style="color:${isProdActive ? 'var(--emerald)' : 'var(--rose)'}">${isProdActive ? 'ACTIVE' : 'PAUSED'}</strong></span>
-                            </div>
-                            <button class="adm-btn-toggle" style="background:${isProdActive ? '#e11d48' : 'var(--emerald)'};color:#fff;padding:5px 10px;font-size:9.5px;" onclick="adminToggleProduct('${u.phone}', '${pId}')">
-                                <i class="fa-solid fa-power-off"></i> ${isProdActive ? 'Pause' : 'Activate'}
-                            </button>
+                const box = document.getElementById('m-user-dossier-content');
+                box.innerHTML = `
+                    <button class="modal-close" onclick="closeModal('m-user-dossier')"><i class="fa-solid fa-xmark"></i></button>
+                    <div style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:10px;margin-bottom:12px">
+                        <div style="width:48px;height:48px;border-radius:50%;background:var(--gold-gradient);color:#0f172a;display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:6px">
+                            <i class="fa-solid fa-user-secret"></i>
                         </div>
-                    `;
-                });
+                        <h3 style="font-size:16px;color:#fff">${u.name || 'User'} (ID: ${u.idCode || '000000'})</h3>
+                        <span style="font-size:10.5px;color:var(--text-muted)">Registered: ${u.registeredAt || 'N/A'}</span>
+                    </div>
+
+                    <div style="background:#080d1a;padding:10px;border-radius:10px;font-size:11px;margin-bottom:12px;border:1px solid rgba(255,153,0,0.25)">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                            <span style="color:#94a3b8">Mobile Number:</span>
+                            <strong style="color:#fff;font-family:'JetBrains Mono'">${userPhoneNum}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                            <span style="color:#94a3b8">Login Password:</span>
+                            <strong style="color:var(--gold-text);font-family:'JetBrains Mono'">${u.pass || 'N/A'}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                            <span style="color:#94a3b8">Payment PIN:</span>
+                            <strong style="color:#38bdf8;font-family:'JetBrains Mono'">${u.pin || 'N/A'}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                            <span style="color:#94a3b8">Withdrawal Status:</span>
+                            <strong style="color:${isWdAllowed ? 'var(--emerald)' : 'var(--rose)'};font-weight:800">${isWdAllowed ? 'Enabled' : 'Disabled'}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                            <span style="color:#94a3b8">Account Balance:</span>
+                            <strong style="color:var(--emerald);font-size:13px">৳ ${Number(u.bal || 0).toFixed(2)}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between">
+                            <span style="color:#94a3b8">Invitation Code:</span>
+                            <strong style="color:#ffc453">${u.inviteCode || 'N/A'}</strong>
+                        </div>
+                    </div>
+
+                    <!-- USER'S PURCHASED PRODUCTS SECTION -->
+                    <div style="margin-bottom:12px">
+                        <div style="font-size:11px;color:var(--gold-text);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-boxes-stacked"></i> Staked Products (${validProductCount}):</div>
+                        <div style="max-height:110px;overflow-y:auto">${productsHtml}</div>
+                    </div>
+
+                    <div style="margin-bottom:12px">
+                        <div style="font-size:11px;color:var(--emerald);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-wallet"></i> Deposit Records:</div>
+                        <div style="max-height:75px;overflow-y:auto">${depHtml}</div>
+                    </div>
+
+                    <div style="margin-bottom:14px">
+                        <div style="font-size:11px;color:var(--rose);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-money-bill-transfer"></i> Withdrawal Records:</div>
+                        <div style="max-height:75px;overflow-y:auto">${wdHtml}</div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+                        <button class="adm-btn-toggle" style="background:#1e293b;color:var(--gold-text);border:1px solid var(--gold-text)" onclick="adminChangeUserBal('${actualPhone}')">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit Balance
+                        </button>
+                        <button class="adm-btn-toggle" style="background:${isWdAllowed ? '#e11d48' : 'var(--emerald)'};color:#fff" onclick="adminToggleUserWithdraw('${actualPhone}')">
+                            <i class="fa-solid fa-money-bill-transfer"></i> ${isWdAllowed ? 'Disable WD' : 'Enable WD'}
+                        </button>
+                    </div>
+                    <button class="adm-btn-toggle" style="width:100%;background:${u.blocked ? 'var(--emerald)' : '#e11d48'};color:#fff" onclick="adminToggleBlockUser('${actualPhone}')">
+                        <i class="fa-solid fa-user-lock"></i> ${u.blocked ? 'Unblock User Account' : 'Block Entire Account'}
+                    </button>
+                `;
+                openModal('m-user-dossier');
+            } catch(err) {
+                console.error("Dossier render exception:", err);
+                alert("An error occurred opening this user's file. Please try again.");
             }
-
-            const box = document.getElementById('m-user-dossier-content');
-            box.innerHTML = `
-                <button class="modal-close" onclick="closeModal('m-user-dossier')"><i class="fa-solid fa-xmark"></i></button>
-                <div style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:10px;margin-bottom:12px">
-                    <div style="width:48px;height:48px;border-radius:50%;background:var(--gold-gradient);color:#0f172a;display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:6px">
-                        <i class="fa-solid fa-user-secret"></i>
-                    </div>
-                    <h3 style="font-size:16px;color:#fff">${u.name} (ID: ${u.idCode})</h3>
-                    <span style="font-size:10.5px;color:var(--text-muted)">Registered: ${u.registeredAt || 'N/A'}</span>
-                </div>
-
-                <div style="background:#080d1a;padding:10px;border-radius:10px;font-size:11px;margin-bottom:12px;border:1px solid rgba(255,153,0,0.25)">
-                    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">Mobile Number:</span>
-                        <strong style="color:#fff;font-family:'JetBrains Mono'">${u.phone}</strong>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">Login Password:</span>
-                        <strong style="color:var(--gold-text);font-family:'JetBrains Mono'">${u.pass}</strong>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">Payment PIN:</span>
-                        <strong style="color:#38bdf8;font-family:'JetBrains Mono'">${u.pin}</strong>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">Withdrawal Status:</span>
-                        <strong style="color:${isWdAllowed ? 'var(--emerald)' : 'var(--rose)'};font-weight:800">${isWdAllowed ? 'Enabled' : 'Disabled'}</strong>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">Account Balance:</span>
-                        <strong style="color:var(--emerald);font-size:13px">৳ ${Number(u.bal || 0).toFixed(2)}</strong>
-                    </div>
-                    <div style="display:flex;justify-content:space-between">
-                        <span style="color:#94a3b8">Invitation Code:</span>
-                        <strong style="color:#ffc453">${u.inviteCode || 'N/A'}</strong>
-                    </div>
-                </div>
-
-                <!-- USER'S PURCHASED PRODUCTS SECTION -->
-                <div style="margin-bottom:12px">
-                    <div style="font-size:11px;color:var(--gold-text);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-boxes-stacked"></i> Staked Products (${invKeys.length}):</div>
-                    <div style="max-height:110px;overflow-y:auto">${productsHtml}</div>
-                </div>
-
-                <div style="margin-bottom:12px">
-                    <div style="font-size:11px;color:var(--emerald);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-wallet"></i> Deposit Records:</div>
-                    <div style="max-height:75px;overflow-y:auto">${depHtml}</div>
-                </div>
-
-                <div style="margin-bottom:14px">
-                    <div style="font-size:11px;color:var(--rose);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-money-bill-transfer"></i> Withdrawal Records:</div>
-                    <div style="max-height:75px;overflow-y:auto">${wdHtml}</div>
-                </div>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
-                    <button class="adm-btn-toggle" style="background:#1e293b;color:var(--gold-text);border:1px solid var(--gold-text)" onclick="adminChangeUserBal('${u.phone}')">
-                        <i class="fa-solid fa-pen-to-square"></i> Edit Balance
-                    </button>
-                    <button class="adm-btn-toggle" style="background:${isWdAllowed ? '#e11d48' : 'var(--emerald)'};color:#fff" onclick="adminToggleUserWithdraw('${u.phone}')">
-                        <i class="fa-solid fa-money-bill-transfer"></i> ${isWdAllowed ? 'Disable WD' : 'Enable WD'}
-                    </button>
-                </div>
-                <button class="adm-btn-toggle" style="width:100%;background:${u.blocked ? 'var(--emerald)' : '#e11d48'};color:#fff" onclick="adminToggleBlockUser('${u.phone}')">
-                    <i class="fa-solid fa-user-lock"></i> ${u.blocked ? 'Unblock User Account' : 'Block Entire Account'}
-                </button>
-            `;
-            openModal('m-user-dossier');
         }
 
         // Toggle User's Purchased Product (Pause / Activate)
@@ -2687,7 +2789,7 @@
             if(tx && tx.status === 'pending') {
                 tx.status = 'approved';
                 if(usersDB[tx.userPhone]) {
-                    usersDB[tx.userPhone].bal = +(usersDB[tx.userPhone].bal + tx.amountNum).toFixed(2);
+                    usersDB[tx.userPhone].bal = +(Number(usersDB[tx.userPhone].bal || 0) + tx.amountNum).toFixed(2);
                     setDB('USERS', usersDB);
                 }
                 setDB('TRANSACTIONS', allTx);
@@ -2716,7 +2818,7 @@
             if(tx && tx.status === 'pending') {
                 tx.status = 'rejected';
                 if(tx.type === 'withdraw' && usersDB[tx.userPhone]) {
-                    usersDB[tx.userPhone].bal = +(usersDB[tx.userPhone].bal + tx.amountNum).toFixed(2);
+                    usersDB[tx.userPhone].bal = +(Number(usersDB[tx.userPhone].bal || 0) + tx.amountNum).toFixed(2);
                     setDB('USERS', usersDB);
                 }
                 setDB('TRANSACTIONS', allTx);
@@ -2749,6 +2851,7 @@
         // INITIALIZE ON LOAD
         window.onload = function() {
             renderTxList();
+            updateLanguageUI();
 
             const savedUser = cleanPhone(localStorage.getItem(DB_PREFIX + 'CURRENT_USER') || '');
             const usersDB = getDB('USERS', {});
