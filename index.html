@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -325,6 +325,7 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
+            margin-bottom: 12px;
         }
         .vip-top-badge {
             position: absolute;
@@ -344,6 +345,21 @@
         .prod-img img { width: 100%; height: 100%; object-fit: cover; }
         .prod-info h4 { font-size: 14px; font-weight: 800; }
         .prod-info .price { color: var(--gold-text); font-weight: 800; font-size: 13px; margin: 2px 0; }
+        
+        .discount-timer-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(225, 29, 72, 0.15);
+            border: 1px solid rgba(225, 29, 72, 0.35);
+            color: #fb7185;
+            font-size: 9.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-top: 4px;
+        }
+
         .prod-stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -827,13 +843,13 @@
     <!-- GLOBAL LOADER -->
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <p style="color:#ff9900; font-weight:800; font-size:14px;">প্রসেসিং হচ্ছে, দয়া করে কিছুক্ষণ অপেক্ষা করুন...</p>
+        <p style="color:#ff9900; font-weight:800; font-size:14px;">Processing request, please wait a moment...</p>
     </div>
 
     <!-- TOAST POPUP -->
-    <div id="toast"><i class="fa-solid fa-circle-check" style="color:#ff9900"></i> <span id="toast-txt">সফল হয়েছে!</span></div>
+    <div id="toast"><i class="fa-solid fa-circle-check" style="color:#ff9900"></i> <span id="toast-txt">Success!</span></div>
 
-    <!-- 1ST TIME NEW USER WELCOME BONUS MODAL -->
+    <!-- 1ST TIME NEW USER WELCOME BONUS MODAL (100 TK) -->
     <div class="modal" id="m-welcome" style="z-index: 10001;">
         <div class="modal-box" style="text-align: center; border: 2px solid var(--gold-text); background: linear-gradient(180deg, #152037 0%, #0a0f1d 100%);">
             <div style="width: 65px; height: 65px; margin: 0 auto 12px; background: rgba(255, 153, 0, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--gold-text);">
@@ -842,17 +858,64 @@
             <div style="display:inline-block; background:rgba(255,153,0,0.15); color:var(--gold-text); font-size:11px; font-weight:800; padding:4px 12px; border-radius:20px; border:1px solid var(--gold-text); margin-bottom:10px;">
                 ✦ AMAZON VIP PLATFORM ✦
             </div>
-            <h3 style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px;">আমাদের Amazon প্ল্যাটফর্মে আপনাকে স্বাগতম!</h3>
+            <h3 style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px;">Welcome to Amazon VIP!</h3>
             <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 14px;">
-                Amazon VIP তে সফলভাবে অ্যাকাউন্ট তৈরি করার জন্য আপনাকে আন্তরিক <strong>অভিনন্দন</strong>!<br>
-                নতুন মেম্বার হিসেবে আপনার জন্য বিশেষ উপহার:
+                Congratulations on registering your official Amazon VIP account!<br>
+                As a special welcome gift, claim your new member registration reward:
             </p>
             <div style="background: rgba(16, 185, 129, 0.15); border: 1.5px dashed var(--emerald); border-radius: 12px; padding: 12px; margin-bottom: 18px;">
-                <span style="font-size: 11px; color: #94a3b8; display: block;">নতুন সদস্য স্বাগতম বোনাস</span>
-                <strong style="font-size: 26px; color: var(--emerald); font-family: 'JetBrains Mono';">+ ৳৫০.০০</strong>
+                <span style="font-size: 11px; color: #94a3b8; display: block;">New Member Welcome Gift</span>
+                <strong style="font-size: 26px; color: var(--emerald); font-family: 'JetBrains Mono';">+ ৳100.00</strong>
             </div>
             <button class="btn-gold" onclick="claimWelcomeBonus()" style="font-size: 14px; padding: 12px;">
-                <i class="fa-solid fa-hand-holding-dollar"></i> বোনাস গ্রহণ করুন
+                <i class="fa-solid fa-hand-holding-dollar"></i> Claim ৳100.00 Reward
+            </button>
+        </div>
+    </div>
+
+    <!-- STYLISH HOME PAGE EVENT ANNOUNCEMENT MODAL -->
+    <div class="modal" id="m-event-notice" style="z-index: 10003;">
+        <div class="modal-box" style="text-align:center; border:2px solid #ff9900; background:linear-gradient(180deg,#141d32 0%,#090d18 100%); position:relative; overflow:hidden;">
+            <button class="modal-close" onclick="closeModal('m-event-notice')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="width:65px; height:65px; margin:0 auto 12px; background:linear-gradient(135deg, rgba(255,153,0,0.2), rgba(225,29,72,0.25)); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#ff9900; font-size:30px; box-shadow:0 0 20px rgba(255,153,0,0.35);">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+            </div>
+            <div style="display:inline-block; background:rgba(255,153,0,0.15); color:var(--gold-text); font-size:10px; font-weight:800; padding:4px 14px; border-radius:20px; border:1px solid rgba(255,153,0,0.4); margin-bottom:8px; letter-spacing:1px;">
+                ★ SPECIAL FESTIVE EVENT ★
+            </div>
+            <h3 style="font-size:18px; font-weight:800; color:#fff; margin-bottom:8px;">Amazon VIP Mega Carnival</h3>
+            <p style="font-size:11.5px; color:#cbd5e1; line-height:1.6; margin-bottom:14px;">
+                Take advantage of exclusive platform benefits running right now:
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px; text-align:left;">
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,153,0,0.25); border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-bolt" style="color:#ff9900; font-size:16px;"></i>
+                    <div>
+                        <strong style="font-size:11px; color:#fff; display:block;">48-Hour Flash Sale</strong>
+                        <span style="font-size:9.5px; color:#94a3b8;">All VIP products are currently discounted by ৳20!</span>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(52,211,153,0.25); border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-trophy" style="color:var(--emerald); font-size:16px;"></i>
+                    <div>
+                        <strong style="font-size:11px; color:#fff; display:block;">Direct Referral Rank Rewards</strong>
+                        <span style="font-size:9.5px; color:#94a3b8;">Earn up to ৳15,000 cash rewards for active team members!</span>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(56,189,248,0.25); border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-hand-holding-dollar" style="color:#38bdf8; font-size:16px;"></i>
+                    <div>
+                        <strong style="font-size:11px; color:#fff; display:block;">15% Daily Team Commission</strong>
+                        <span style="font-size:9.5px; color:#94a3b8;">Get 15% instant commission whenever teammates harvest profit.</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-gold" onclick="closeModal('m-event-notice')">
+                <i class="fa-solid fa-rocket"></i> Explore Events Now
             </button>
         </div>
     </div>
@@ -862,23 +925,23 @@
         <div class="modal-box" style="text-align:center; border:2px solid var(--cyan); background:linear-gradient(180deg,#0e1a2f 0%,#090d18 100%);">
             <button class="modal-close" onclick="closeModal('m-profile-welcome')"><i class="fa-solid fa-xmark"></i></button>
             <div style="width:60px;height:60px;margin:0 auto 12px;background:rgba(6,182,212,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:28px">
-                <i class="fa-solid fa-hand-sparkles"></i>
+                <i class="fa-solid fa-headset"></i>
             </div>
-            <h3 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:8px">স্বাগতম বার্তা</h3>
+            <h3 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:8px">Customer Support</h3>
             <p style="font-size:12.5px;color:#cbd5e1;line-height:1.6;margin-bottom:14px">
-                আমাদের Amazon VIP প্ল্যাটফর্মে আপনাকে আন্তরিক স্বাগতম!<br>
-                আমরা সবসময় আপনার সেবায় প্রস্তুত।
+                Welcome to Amazon VIP customer service desk!<br>
+                Our team is available 24/7 to assist you.
             </p>
             <div style="background:rgba(255,255,255,0.05);border:1px dashed rgba(6,182,212,0.4);border-radius:12px;padding:12px;margin-bottom:16px">
                 <span style="font-size:12px;color:var(--gold-text);font-weight:700;display:block;margin-bottom:6px">
-                    যে কোন প্রয়োজনে আমার সাথে যোগাযোগ করুন:
+                    Official Telegram Channel:
                 </span>
                 <a href="https://t.me/+z0ufJ8ZITfNhNTZl" target="_blank" style="color:#38bdf8;font-size:11.5px;font-family:'JetBrains Mono';text-decoration:none;word-break:break-all;font-weight:700">
                     https://t.me/+z0ufJ8ZITfNhNTZl
                 </a>
             </div>
             <button class="btn-gold" style="background:#0088cc;color:#fff;box-shadow:0 6px 20px rgba(0,136,204,0.4)" onclick="window.open('https://t.me/+z0ufJ8ZITfNhNTZl','_blank'); closeModal('m-profile-welcome');">
-                <i class="fa-brands fa-telegram"></i> টেলিগ্রামে যোগাযোগ করুন
+                <i class="fa-brands fa-telegram"></i> Connect on Telegram
             </button>
         </div>
     </div>
@@ -896,57 +959,57 @@
         <div id="view-auth" class="auth-wrap">
             <div class="box">
                 <div class="amazon-brand-logo" style="justify-content:center;margin-bottom:12px" onclick="checkSecretAdminTap()">
-                    <i class="fa-brands fa-amazon"></i> <span>Amazon</span>
+                    <i class="fa-brands fa-amazon"></i> <span>Amazon VIP</span>
                 </div>
                 
                 <div class="tabs">
-                    <button class="tab-btn active" id="t-login" onclick="switchAuth('login')">লগইন</button>
-                    <button class="tab-btn" id="t-reg" onclick="switchAuth('reg')">রেজিস্ট্রেশন</button>
+                    <button class="tab-btn active" id="t-login" onclick="switchAuth('login')">Login</button>
+                    <button class="tab-btn" id="t-reg" onclick="switchAuth('reg')">Register</button>
                 </div>
                 
                 <!-- LOGIN FORM -->
                 <form id="f-login" onsubmit="handleAuth(event,'login')">
                     <div class="input-group">
-                        <label>মোবাইল নম্বর</label>
+                        <label>Mobile Number</label>
                         <div class="input-wrap"><i class="fa-solid fa-phone"></i><input type="tel" id="l-phone" placeholder="01XXXXXXXXX" autocomplete="off" required></div>
                     </div>
                     <div class="input-group">
-                        <label>লগইন পাসওয়ার্ড</label>
-                        <div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="l-pass" placeholder="কমপক্ষে ৬ ডিজিটের পাসওয়ার্ড দিন" autocomplete="off" required></div>
+                        <label>Login Password</label>
+                        <div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="l-pass" placeholder="Enter at least 6 characters" autocomplete="off" required></div>
                         <div class="show-pass-wrap" onclick="togglePassVisibility()">
                             <input type="checkbox" id="show-pass-chk">
-                            <label for="show-pass-chk" style="cursor:pointer;font-size:11px;color:#cbd5e1;">পাসওয়ার্ড দেখুন (Show Password)</label>
+                            <label for="show-pass-chk" style="cursor:pointer;font-size:11px;color:#cbd5e1;">Show Password</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn-gold" style="margin-top:6px">লগইন করুন</button>
+                    <button type="submit" class="btn-gold" style="margin-top:6px">Login Account</button>
                 </form>
 
                 <!-- REGISTRATION FORM -->
                 <form id="f-reg" style="display:none" onsubmit="handleAuth(event,'reg')">
                     <div class="input-group">
-                        <label>ইউজারনেম (ইংরেজিতে নাম)</label>
-                        <div class="input-wrap"><i class="fa-solid fa-user"></i><input type="text" id="r-name" placeholder="যেমন: amazon" required></div>
+                        <label>Username (English Name)</label>
+                        <div class="input-wrap"><i class="fa-solid fa-user"></i><input type="text" id="r-name" placeholder="e.g. amazonvip" required></div>
                     </div>
                     <div class="input-group">
-                        <label>মোবাইল নম্বর (একটি নম্বরে একটিই অ্যাকাউন্ট)</label>
+                        <label>Mobile Number (One account per phone)</label>
                         <div class="input-wrap"><i class="fa-solid fa-phone"></i><input type="tel" id="r-phone" placeholder="01XXXXXXXXX" required></div>
                     </div>
                     <div class="input-group">
-                        <label>লগইন পাসওয়ার্ড (Min 6 digits)</label>
-                        <div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="r-pass" placeholder="কমপক্ষে ৬ সংখ্যা বা ডিজিট" required></div>
+                        <label>Login Password (Min 6 characters)</label>
+                        <div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="r-pass" placeholder="At least 6 characters" required></div>
                     </div>
                     <div class="input-group">
-                        <label>পেমেন্ট পাসওয়ার্ড (৬ সংখ্যার পিন)</label>
-                        <div class="input-wrap"><i class="fa-solid fa-shield-halved"></i><input type="password" id="r-pin" maxlength="6" placeholder="৬ সংখ্যার গোপন পিন" required></div>
+                        <label>Payment PIN (6-Digit Code)</label>
+                        <div class="input-wrap"><i class="fa-solid fa-shield-halved"></i><input type="password" id="r-pin" maxlength="6" placeholder="6-digit secret PIN" required></div>
                     </div>
                     <div class="input-group">
-                        <label>ইনভাইটেশন কোড (Optional)</label>
+                        <label>Invitation Code (Optional)</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-gift" style="color:var(--gold-text)"></i>
-                            <input type="text" id="r-invite" placeholder="যেমন: AMAZON-582914" style="font-family:'JetBrains Mono';font-weight:700;letter-spacing:1px;color:#38bdf8">
+                            <input type="text" id="r-invite" placeholder="e.g. AMAZON-582914" style="font-family:'JetBrains Mono';font-weight:700;letter-spacing:1px;color:#38bdf8">
                         </div>
                     </div>
-                    <button type="submit" class="btn-gold" style="margin-top:10px">অ্যাকাউন্ট খুলুন</button>
+                    <button type="submit" class="btn-gold" style="margin-top:10px">Create VIP Account</button>
                 </form>
             </div>
         </div>
@@ -972,7 +1035,7 @@
 
             <div class="ticker">
                 <i class="fa-solid fa-bullhorn" style="color:var(--gold-text)"></i>
-                <p>Amazon VIP প্ল্যাটফর্মে স্বাগতম! প্রতিদিন ভেরিফায়েড ই-কমার্স স্টকিংয়ের মাধ্যমে নিশ্চিত প্রফিট নিন।</p>
+                <p>Welcome to Amazon VIP Platform! Earn verified guaranteed e-commerce staking profits daily.</p>
             </div>
 
             <div class="action-grid">
@@ -987,133 +1050,23 @@
                 </div>
             </div>
 
+            <!-- 48-Hour Discount Notice Banner -->
+            <div id="discount-banner" style="background: linear-gradient(135deg, rgba(225,29,72,0.18) 0%, rgba(255,153,0,0.18) 100%); border: 1.5px solid rgba(255,153,0,0.4); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="width:36px; height:36px; border-radius:50%; background:var(--rose); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px;">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h5 style="font-size:12.5px; font-weight:800; color:#fff;">FLASH SALE: ৳20 DISCOUNT ON ALL PRODUCTS!</h5>
+                        <p style="font-size:10px; color:#cbd5e1; margin-top:2px;">Offer expires in: <strong id="global-timer-txt" style="color:var(--gold-text); font-family:'JetBrains Mono';">48:00:00</strong></p>
+                    </div>
+                </div>
+            </div>
+
             <div class="box-title"><i class="fa-solid fa-boxes-packing"></i> VIP Product Staking & Profit</div>
 
-            <!-- VIP 1 -->
-            <div class="prod-card">
-                <div class="vip-top-badge">VIP 1</div>
-                <div class="prod-top">
-                    <div class="prod-img"><img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=150&q=80" alt="Echo"></div>
-                    <div class="prod-info">
-                        <h4>Amazon Echo Dot</h4>
-                        <div class="price">৳ 450.00</div>
-                        <span style="font-size:9px;color:var(--text-muted)">Daily: ৳49.00 (10.88%)</span>
-                    </div>
-                </div>
-                <div class="prod-stats">
-                    <div>Daily<strong>৳49</strong></div>
-                    <div>Rate<strong style="color:var(--emerald)">10.88%</strong></div>
-                    <div>Total (365d)<strong style="color:var(--gold-text)">৳17,885</strong></div>
-                </div>
-                <div id="p-act-1">
-                    <button class="btn-gold" onclick="buy(1,'Echo Dot',450,49)">Buy Stock Product</button>
-                </div>
-            </div>
-
-            <!-- VIP 2 -->
-            <div class="prod-card">
-                <div class="vip-top-badge">VIP 2</div>
-                <div class="prod-top">
-                    <div class="prod-img"><img src="https://images.unsplash.com/photo-1507646227500-4d389b0012be?w=150&q=80" alt="Fire Stick"></div>
-                    <div class="prod-info">
-                        <h4>Amazon Fire TV Stick</h4>
-                        <div class="price">৳ 900.00</div>
-                        <span style="font-size:9px;color:var(--text-muted)">Daily: ৳121.00 (13.44%)</span>
-                    </div>
-                </div>
-                <div class="prod-stats">
-                    <div>Daily<strong>৳121</strong></div>
-                    <div>Rate<strong style="color:var(--emerald)">13.44%</strong></div>
-                    <div>Total (365d)<strong style="color:var(--gold-text)">৳44,165</strong></div>
-                </div>
-                <div id="p-act-2">
-                    <button class="btn-gold" onclick="buy(2,'Fire TV Stick',900,121)">Buy Stock Product</button>
-                </div>
-            </div>
-
-            <!-- VIP 3 -->
-            <div class="prod-card">
-                <div class="vip-top-badge">VIP 3</div>
-                <div class="prod-top">
-                    <div class="prod-img"><img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=150&q=80" alt="Kindle"></div>
-                    <div class="prod-info">
-                        <h4>Amazon Kindle Paperwhite</h4>
-                        <div class="price">৳ 1,500.00</div>
-                        <span style="font-size:9px;color:var(--text-muted)">Daily: ৳215.00 (14.33%)</span>
-                    </div>
-                </div>
-                <div class="prod-stats">
-                    <div>Daily<strong>৳215</strong></div>
-                    <div>Rate<strong style="color:var(--emerald)">14.33%</strong></div>
-                    <div>Total (365d)<strong style="color:var(--gold-text)">৳78,475</strong></div>
-                </div>
-                <div id="p-act-3">
-                    <button class="btn-gold" onclick="buy(3,'Kindle Paper',1500,215)">Buy Stock Product</button>
-                </div>
-            </div>
-
-            <!-- VIP 4 -->
-            <div class="prod-card">
-                <div class="vip-top-badge">VIP 4</div>
-                <div class="prod-top">
-                    <div class="prod-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150&q=80" alt="Controller"></div>
-                    <div class="prod-info">
-                        <h4>Amazon Luna Controller</h4>
-                        <div class="price">৳ 2,500.00</div>
-                        <span style="font-size:9px;color:var(--text-muted)">Daily: ৳400.00 (16.00%)</span>
-                    </div>
-                </div>
-                <div class="prod-stats">
-                    <div>Daily<strong>৳400</strong></div>
-                    <div>Rate<strong style="color:var(--emerald)">16.00%</strong></div>
-                    <div>Total (365d)<strong style="color:var(--gold-text)">৳1,46,000</strong></div>
-                </div>
-                <div id="p-act-4">
-                    <button class="btn-gold" onclick="buy(4,'Luna Controller',2500,400)">Buy Stock Product</button>
-                </div>
-            </div>
-
-            <!-- VIP 5 -->
-            <div class="prod-card">
-                <div class="vip-top-badge">VIP 5</div>
-                <div class="prod-top">
-                    <div class="prod-img"><img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=150&q=80" alt="Echo Studio"></div>
-                    <div class="prod-info">
-                        <h4>Amazon Studio Echo Max</h4>
-                        <div class="price">৳ 5,500.00</div>
-                        <span style="font-size:9px;color:var(--text-muted)">Daily: ৳965.00 (17.55%)</span>
-                    </div>
-                </div>
-                <div class="prod-stats">
-                    <div>Daily<strong>৳965</strong></div>
-                    <div>Rate<strong style="color:var(--emerald)">17.55%</strong></div>
-                    <div>Total (365d)<strong style="color:var(--gold-text)">৳3,52,225</strong></div>
-                </div>
-                <div id="p-act-5">
-                    <button class="btn-gold" onclick="buy(5,'Studio Max',5500,965)">Buy Stock Product</button>
-                </div>
-            </div>
-
-            <!-- VIP 6 -->
-            <div class="prod-card">
-                <div class="vip-top-badge">VIP 6</div>
-                <div class="prod-top">
-                    <div class="prod-img"><img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=150&q=80" alt="Echo Show Omni"></div>
-                    <div class="prod-info">
-                        <h4>Amazon Echo Show Omni</h4>
-                        <div class="price">৳ 10,000.00</div>
-                        <span style="font-size:9px;color:var(--text-muted)">Daily: ৳2,200.00 (22.00%)</span>
-                    </div>
-                </div>
-                <div class="prod-stats">
-                    <div>Daily<strong>৳2,200</strong></div>
-                    <div>Rate<strong style="color:var(--emerald)">22.00%</strong></div>
-                    <div>Total (365d)<strong style="color:var(--gold-text)">৳8,03,000</strong></div>
-                </div>
-                <div id="p-act-6">
-                    <button class="btn-gold" onclick="buy(6,'Echo Show Omni',10000,2200)">Buy Stock Product</button>
-                </div>
-            </div>
+            <!-- DYNAMIC PRODUCT CONTAINER -->
+            <div id="products-container"></div>
         </div>
 
         <!-- ================= 3. DEPOSIT SELECT VIEW ================= -->
@@ -1127,24 +1080,24 @@
             <div class="box" style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                     <h4 style="color:var(--gold-text);font-size:13px;font-weight:700">Wallet Recharge</h4>
-                    <p style="font-size:10px;color:var(--text-muted)">পরিমাণ নির্বাচন করে সেন্ড মানি করুন</p>
+                    <p style="font-size:10px;color:var(--text-muted)">Select amount and proceed with Send Money</p>
                 </div>
                 <div class="wallet-pill"><span class="u-bal">৳ 0.00</span></div>
             </div>
 
             <div class="box">
-                <div class="box-title"><i class="fa-solid fa-coins"></i> ডিপোজিট পরিমাণ নির্ধারণ করুন</div>
+                <div class="box-title"><i class="fa-solid fa-coins"></i> Choose Deposit Amount</div>
                 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-                    <button class="dep-quick-btn active" onclick="setAmt(450)">৳ 450</button>
-                    <button class="dep-quick-btn" onclick="setAmt(900)">৳ 900</button>
-                    <button class="dep-quick-btn" onclick="setAmt(1500)">৳ 1,500</button>
-                    <button class="dep-quick-btn" onclick="setAmt(2500)">৳ 2,500</button>
-                    <button class="dep-quick-btn" onclick="setAmt(5500)">৳ 5,500</button>
-                    <button class="dep-quick-btn" onclick="setAmt(10000)">৳ 10,000</button>
+                    <button class="dep-quick-btn active" onclick="setAmt(430)">৳ 430</button>
+                    <button class="dep-quick-btn" onclick="setAmt(880)">৳ 880</button>
+                    <button class="dep-quick-btn" onclick="setAmt(1480)">৳ 1,480</button>
+                    <button class="dep-quick-btn" onclick="setAmt(2480)">৳ 2,480</button>
+                    <button class="dep-quick-btn" onclick="setAmt(5480)">৳ 5,480</button>
+                    <button class="dep-quick-btn" onclick="setAmt(9980)">৳ 9,980</button>
                 </div>
                 
-                <input type="number" id="dep-val" class="deposit-amt-box" value="450">
-                <span style="font-size:11px;color:#ff9900;display:block;margin-top:8px;font-weight:700;text-align:center">সর্বনিম্ন রিচার্জ পরিমাণ: ৳ 450.00</span>
+                <input type="number" id="dep-val" class="deposit-amt-box" value="430">
+                <span style="font-size:11px;color:#ff9900;display:block;margin-top:8px;font-weight:700;text-align:center">Minimum Recharge Amount: ৳ 430.00</span>
             </div>
 
             <div class="box" style="border:1.5px solid #e2136e;display:flex;align-items:center;gap:12px">
@@ -1169,20 +1122,20 @@
             <div class="box" style="background:linear-gradient(135deg,#e2136e,#9d0a4c);color:#fff;display:flex;justify-content:space-between;align-items:center">
                 <div>
                     <h4 style="font-size:14px;font-weight:800">bKash Personal</h4>
-                    <span style="font-size:10px;opacity:0.9">সেন্ড মানি করুন</span>
+                    <span style="font-size:10px;opacity:0.9">Send Money Gateway</span>
                 </div>
                 <div style="text-align:right">
-                    <span style="font-size:9px;opacity:0.9">প্রদেয় পরিমাণ:</span>
-                    <h3 id="pay-amt" style="font-size:17px;font-weight:800">৳ 450.00</h3>
+                    <span style="font-size:9px;opacity:0.9">Payable Amount:</span>
+                    <h3 id="pay-amt" style="font-size:17px;font-weight:800">৳ 430.00</h3>
                 </div>
             </div>
 
             <div class="box" style="text-align:center">
-                <div style="font-size:12px;margin-bottom:10px;color:#cbd5e1">নিচের বিকাশ নম্বরে টাকা পাঠিয়ে TrxID লিখুন:</div>
+                <div style="font-size:12px;margin-bottom:10px;color:#cbd5e1">Send money to the bKash personal number and input the TrxID below:</div>
                 
                 <div style="display:flex;justify-content:space-between;align-items:center;background:#080d1a;border:1px solid var(--gold-text);padding:10px 14px;border-radius:12px;margin-bottom:14px">
                     <strong id="bk-num" style="font-size:17px;letter-spacing:1px;color:#fff">01400207481</strong>
-                    <button class="btn-gold" style="width:auto;padding:6px 14px;font-size:11px" onclick="copyText('01400207481','✅ বিকাশ নম্বর কপি হয়েছে!')">
+                    <button class="btn-gold" style="width:auto;padding:6px 14px;font-size:11px" onclick="copyText('01400207481','✅ bKash number copied to clipboard!')">
                         <i class="fa-regular fa-copy"></i> Copy
                     </button>
                 </div>
@@ -1190,7 +1143,7 @@
                 <div style="text-align:left;font-size:11px;color:var(--gold-text);font-weight:700;margin-bottom:6px">
                     Enter Send Money TrxID:
                 </div>
-                <input type="text" id="trx-id" placeholder="যেমন: BLA49X2M9P" style="width:100%;padding:12px;background:#080d1a;border:2px solid #e2136e;border-radius:10px;color:#fff;text-align:center;font-size:14px;font-weight:800;letter-spacing:1px;margin-bottom:14px;outline:none">
+                <input type="text" id="trx-id" placeholder="e.g. BLA49X2M9P" style="width:100%;padding:12px;background:#080d1a;border:2px solid #e2136e;border-radius:10px;color:#fff;text-align:center;font-size:14px;font-weight:800;letter-spacing:1px;margin-bottom:14px;outline:none">
 
                 <button class="btn-green" onclick="submitDeposit()">
                     <i class="fa-solid fa-shield-check"></i> Submit Deposit Request
@@ -1209,7 +1162,7 @@
             <div id="w-content"></div>
 
             <div class="policy">
-                <strong>উত্তোলন নীতিমালা:</strong> সময়: দুপুর ১২:০০ – রাত ০৮:০০ পর্যন্ত। শুধুমাত্র বিকাশ পার্সোনাল নম্বরে পেমেন্ট প্রদান করা হবে। সর্বনিম্ন উত্তোলন: ৳২০০। উত্তোলনে ১১% প্ল্যাটফর্ম ফি প্রযোজ্য।
+                <strong>Withdrawal Policy:</strong> Operating Hours: 12:00 PM – 08:00 PM. Payments are processed exclusively to bKash Personal accounts. <strong>Minimum withdrawal: ৳150.00</strong>. An 11% platform handling fee applies.
             </div>
         </div>
 
@@ -1266,15 +1219,15 @@
                 </div>
                 <div class="box" style="text-align:center">
                     <i class="fa-solid fa-coins" style="color:var(--gold-text);font-size:22px;margin-bottom:6px"></i>
-                    <span style="font-size:10px;color:var(--text-muted);display:block">15% Referral Profit</span>
+                    <span style="font-size:10px;color:var(--text-muted);display:block">15% Referral Rebate</span>
                     <strong id="team-comm" style="font-size:16px;color:var(--emerald);font-family:'JetBrains Mono'">৳ 0.00</strong>
                 </div>
             </div>
 
             <div class="box">
-                <div class="box-title"><i class="fa-solid fa-users-viewfinder"></i> Team Active List (নাম ও আইডি)</div>
+                <div class="box-title"><i class="fa-solid fa-users-viewfinder"></i> Team Active Members (Name & ID)</div>
                 <div id="team-list" style="font-size:11px;color:var(--text-muted);text-align:center;padding:12px">
-                    এখনও কোনো মেম্বার যুক্ত হয়নি।
+                    No team members registered yet.
                 </div>
             </div>
         </div>
@@ -1283,15 +1236,15 @@
         <div id="view-rank" class="view">
             <div class="top-navbar" style="margin:-16px -16px 0 -16px">
                 <button class="back-btn" onclick="nav('dashboard')"><i class="fa-solid fa-chevron-left"></i></button>
-                <div style="font-size:17px;font-weight:800;color:#fff;">Rank বোনাস</div>
+                <div style="font-size:17px;font-weight:800;color:#fff;">Rank Rewards</div>
                 <div style="width:34px"></div>
             </div>
 
             <div class="rank-header-card">
                 <div class="rank-header-icon"><i class="fa-solid fa-user-group"></i></div>
                 <div>
-                    <h2 style="font-size:26px;font-weight:800;color:#fff;font-family:'JetBrains Mono';" id="rank-active-cnt">0 <span style="font-size:16px;font-weight:700">জন</span></h2>
-                    <span style="font-size:11px;color:var(--text-muted);font-weight:600">মোট প্রথম স্তরের রেফারেল সদস্য (সক্রিয়)</span>
+                    <h2 style="font-size:26px;font-weight:800;color:#fff;font-family:'JetBrains Mono';" id="rank-active-cnt">0 <span style="font-size:16px;font-weight:700">Members</span></h2>
+                    <span style="font-size:11px;color:var(--text-muted);font-weight:600">Total Direct Active Referral Members</span>
                 </div>
             </div>
 
@@ -1358,13 +1311,13 @@
                     <i class="fa-solid fa-chevron-right" style="color:var(--text-sub);font-size:11px"></i>
                 </div>
 
-                <!-- SUPPORT OPTION (SERIAL ABOVE LIVE AGENT) -->
+                <!-- SUPPORT OPTION -->
                 <div class="menu-row" onclick="window.open('https://t.me/+z0ufJ8ZITfNhNTZl','_blank')">
                     <div class="menu-left"><i class="fa-brands fa-telegram" style="color:#0088cc"></i><span>Official Support</span></div>
                     <span style="font-size:11px;color:#0088cc;font-weight:700">Contact Now <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
 
-                <!-- LIVE AGENT SUPPORT (ORIGINAL LINK) -->
+                <!-- LIVE AGENT SUPPORT -->
                 <div class="menu-row" onclick="window.open('https://t.me/amazon_matrix','_blank')">
                     <div class="menu-left"><i class="fa-solid fa-headset" style="color:#ff9900"></i><span>Live Agent Support</span></div>
                     <span style="font-size:11px;color:#ff9900;font-weight:700">Chat Now <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
@@ -1380,8 +1333,14 @@
         <div id="view-admin" class="view">
             <div class="top-navbar" style="margin:-16px -16px 0 -16px">
                 <button class="back-btn" onclick="nav('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
-                <div class="amazon-brand-logo"><i class="fa-brands fa-amazon"></i> <span>Admin</span></div>
+                <div class="amazon-brand-logo"><i class="fa-brands fa-amazon"></i> <span>Admin Terminal</span></div>
                 <button class="btn-red" onclick="nav('dashboard')"><i class="fa-solid fa-power-off"></i> Exit</button>
+            </div>
+
+            <!-- TOP SEARCH BAR FOR ADMIN -->
+            <div style="position:relative;">
+                <input type="text" id="adm-search-input" oninput="renderAdminPanel()" placeholder="Search user by Name, Phone, or 6-Digit ID..." style="width:100%; padding:11px 14px 11px 38px; background:rgba(8,12,22,0.9); border:1.5px solid var(--gold-text); border-radius:12px; color:#fff; font-size:12px; outline:none; box-shadow:0 0 12px rgba(255,153,0,0.2);">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--gold-text); font-size:13px;"></i>
             </div>
 
             <div class="admin-header">
@@ -1437,7 +1396,7 @@
             <i class="fa-solid fa-gift"></i>
         </div>
         <h4 style="color:var(--gold-text);margin-bottom:8px">Daily Sign-in Reward</h4>
-        <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px">প্রতিদিন একবার চেক-ইন করে আপনার ওয়ালেটে ফ্রি ৳৫.০০ রিওয়ার্ড ক্লেইম করুন।</p>
+        <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Check-in once per day to receive a free ৳5.00 cash reward added to your account balance.</p>
         <button class="btn-green" onclick="claimDaily()">Claim ৳5.00 Free</button>
     </div></div>
 
@@ -1449,8 +1408,8 @@
             <input type="password" id="old-p" placeholder="Enter current password" style="width:100%;padding:10px;background:#080d1a;border:1px solid var(--card-border);border-radius:8px;color:#fff;outline:none">
         </div>
         <div class="input-group">
-            <label>New Password (Min 6 digits)</label>
-            <input type="password" id="new-p" placeholder="Enter at least 6 digits" style="width:100%;padding:10px;background:#080d1a;border:1px solid var(--card-border);border-radius:8px;color:#fff;outline:none">
+            <label>New Password (Min 6 characters)</label>
+            <input type="password" id="new-p" placeholder="Enter at least 6 characters" style="width:100%;padding:10px;background:#080d1a;border:1px solid var(--card-border);border-radius:8px;color:#fff;outline:none">
         </div>
         <button class="btn-gold" style="margin-top:8px" onclick="updatePass('password')">Update Password</button>
     </div></div>
@@ -1473,7 +1432,7 @@
         <button class="modal-close" onclick="closeModal('m-notif')"><i class="fa-solid fa-xmark"></i></button>
         <h4 style="color:var(--gold-text);margin-bottom:12px"><i class="fa-solid fa-receipt"></i> Income & Transactions History</h4>
         <div id="tx-list" style="font-size:11px;color:var(--text-muted);max-height:260px;overflow-y:auto">
-            কোনো ট্রানজেকশন তথ্য নেই।
+            No transaction records found.
         </div>
     </div></div>
 
@@ -1500,10 +1459,7 @@
             syncCloud(k, v);
         }
 
-        // ================================================================
-        // 🚨 আসল সেন্ট্রাল ক্লাউড ডাটাবেজ (FIREBASE) 🚨
-        // আপনার Firebase URL যুক্ত করা হলো:
-        // ================================================================
+        // Central Cloud Database (Firebase)
         let fbDB = null;
         try {
             const firebaseConfig = {
@@ -1518,7 +1474,6 @@
             console.warn("Cloud connection error:", e);
         }
 
-        // ক্লাউডে ডাটা সিঙ্ক করার ফাংশন
         function syncCloud(key, data) {
             if(fbDB) {
                 try {
@@ -1531,9 +1486,8 @@
             }
         }
 
-        // Cross-Device Realtime Listener (যেকোনো ফোন থেকে পরিবর্তন সাথে সাথে এখানে আসবে)
+        // Cross-Device Realtime Listener
         if(fbDB) {
-            // ১. ইউজারদের তালিকা সিঙ্ক
             fbDB.ref('USERS').on('value', snap => {
                 const val = snap.val();
                 if(val) {
@@ -1547,7 +1501,6 @@
                 }
             }, err => console.log("Firebase Users Read Error:", err));
 
-            // ২. ট্রানজেকশন (ডিপোজিট / উইথড্র) সিঙ্ক
             fbDB.ref('TRANSACTIONS').on('value', snap => {
                 const val = snap.val();
                 if(val) {
@@ -1559,11 +1512,35 @@
                 }
             }, err => console.log("Firebase Tx Read Error:", err));
 
-            // ৩. সেটিংস সিঙ্ক
             fbDB.ref('SETTINGS').on('value', snap => {
                 const val = snap.val();
                 if(val) localStorage.setItem(DB_PREFIX + 'SETTINGS', JSON.stringify(val));
             });
+        }
+
+        // 48-Hour Special Discount Engine (20 Tk Off on All Products)
+        const DISCOUNT_DURATION_MS = 48 * 60 * 60 * 1000;
+        function getDiscountInfo() {
+            let settings = getDB('SETTINGS', { withdrawEnabled: true });
+            if(!settings.discountStartTime) {
+                settings.discountStartTime = Date.now();
+                setDB('SETTINGS', settings);
+            }
+            const diff = (settings.discountStartTime + DISCOUNT_DURATION_MS) - Date.now();
+            if(diff > 0) {
+                const h = Math.floor(diff / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                const pad = n => String(n).padStart(2, '0');
+                return {
+                    isActive: true,
+                    text: `${pad(h)}:${pad(m)}:${pad(s)}`
+                };
+            }
+            return {
+                isActive: false,
+                text: '00:00:00 (Offer Expired)'
+            };
         }
 
         // State Variables
@@ -1571,7 +1548,6 @@
         let activeAdminTab = 'dep';
         let timerIntervals = {};
 
-        // Helper: Generate Unique 6-Digit ID Code
         function generateUniqueIdCode(usersDB) {
             let id;
             do {
@@ -1632,8 +1608,8 @@
             document.body.appendChild(ta);
             ta.focus();
             ta.select();
-            try { document.execCommand('copy'); showToast(msg || 'কপি সফল হয়েছে!'); } 
-            catch(e) { prompt('কপি করতে টেক্সট সিলেক্ট করুন:', str); }
+            try { document.execCommand('copy'); showToast(msg || 'Copied successfully!'); } 
+            catch(e) { prompt('Copy to clipboard:', str); }
             document.body.removeChild(ta);
         }
 
@@ -1672,7 +1648,7 @@
             if(currentUserPhone && v !== 'auth' && v !== 'admin') {
                 const usersDB = getDB('USERS', {});
                 if(usersDB[currentUserPhone] && usersDB[currentUserPhone].blocked) {
-                    alert('⚠️ আপনার অ্যাকাউন্টটি সাময়িকভাবে স্থগিত করা হয়েছে!');
+                    alert('⚠️ Your account has been temporarily suspended!');
                     handleLogout();
                     return;
                 }
@@ -1701,7 +1677,6 @@
             if(v === 'rank') renderRank();
             if(v === 'admin') renderAdminPanel();
 
-            // স্বাগতম বার্তা যখন প্রোফাইলে যাবে
             if(v === 'profile') {
                 setTimeout(() => {
                     openModal('m-profile-welcome');
@@ -1713,6 +1688,9 @@
                 const curUser = usersDB[currentUserPhone];
                 if(curUser && curUser.welcomeBonusClaimed === false) {
                     setTimeout(() => { openModal('m-welcome'); }, 400);
+                } else if(curUser) {
+                    // Show stylish Event Notice on Dashboard
+                    setTimeout(() => { openModal('m-event-notice'); }, 450);
                 }
             }
 
@@ -1720,20 +1698,26 @@
             window.scrollTo(0,0);
         }
 
+        // WELCOME BONUS (UPDATED TO 100 TK)
         function claimWelcomeBonus() {
             const usersDB = getDB('USERS', {});
             const curUser = usersDB[currentUserPhone];
             if(!curUser) return;
 
-            curUser.bal = +(curUser.bal + 50.00).toFixed(2);
+            curUser.bal = +(curUser.bal + 100.00).toFixed(2);
             curUser.welcomeBonusClaimed = true;
             usersDB[currentUserPhone] = curUser;
             setDB('USERS', usersDB);
 
-            addTx('bonus', 'Amazon VIP Welcome Gift', '+ ৳50.00', 'approved');
+            addTx('bonus', 'Amazon VIP Welcome Gift', '+ ৳100.00', 'approved');
             closeModal('m-welcome');
             syncUI();
-            showToast('🎉 অভিনন্দন! ৳৫০.০০ স্বাগতম বোনাস ওয়ালেটে যোগ হয়েছে!');
+            showToast('🎉 Congratulations! ৳100.00 Welcome Reward added to your balance!');
+
+            // Open Event Modal next
+            setTimeout(() => {
+                openModal('m-event-notice');
+            }, 600);
         }
 
         function switchAuth(t) {
@@ -1747,7 +1731,6 @@
             if(inviteInput && pendingCode) inviteInput.value = pendingCode;
         }
 
-        // ================= নিখুঁত AUTH হ্যান্ডলার =================
         function handleAuth(e, type) {
             if(e) e.preventDefault();
             const usersDB = getDB('USERS', {});
@@ -1759,13 +1742,13 @@
                 const pin = document.getElementById('r-pin').value.trim();
                 const inviteCodeInput = document.getElementById('r-invite').value.trim();
 
-                if(!name) { alert('অনুগ্রহ করে ইংরেজিতে একটি নাম লিখুন'); return; }
-                if(phone.length < 11) { alert('অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)'); return; }
-                if(pass.length < 6) { alert('লগইন পাসওয়ার্ড কমপক্ষে ৬ সংখ্যার হতে হবে!'); return; }
-                if(pin.length < 6) { alert('পেমেন্ট পাসওয়ার্ড অবশ্যই ৬ ডিজিটের পিন হতে হবে!'); return; }
+                if(!name) { alert('Please enter your full name in English.'); return; }
+                if(phone.length < 11) { alert('Please enter a valid 11-digit mobile number (e.g. 017XXXXXXXX).'); return; }
+                if(pass.length < 6) { alert('Login password must be at least 6 characters long!'); return; }
+                if(pin.length < 6) { alert('Payment password must be a 6-digit PIN!'); return; }
 
                 if(usersDB[phone]) {
-                    alert('⚠️ এই নম্বরে ইতিমধ্যেই একটি অ্যাকাউন্ট খোলা রয়েছে! অনুগ্রহ করে লগইন করুন।');
+                    alert('⚠️ An account already exists with this mobile number! Please login.');
                     switchAuth('login');
                     document.getElementById('l-phone').value = phone;
                     return;
@@ -1808,39 +1791,38 @@
                 document.getElementById('l-pass').value = pass;
                 document.getElementById('f-reg').reset();
 
-                showToast('✅ রেজিস্ট্রেশন সফল হয়েছে!');
+                showToast('✅ Registration successful!');
                 nav('dashboard');
 
             } else {
-                // LOGIN
                 const phone = cleanPhone(document.getElementById('l-phone').value);
                 const pass = document.getElementById('l-pass').value.trim();
 
                 if(!phone || phone.length < 11) {
-                    alert('সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন!');
+                    alert('Please enter a valid 11-digit mobile number!');
                     return;
                 }
 
                 if(!usersDB[phone]) {
-                    alert('❌ এই নম্বরে কোনো অ্যাকাউন্ট তৈরি করা নেই!\nঅনুগ্রহ করে প্রথমে "রেজিস্ট্রেশন" বাটনে চাপ দিয়ে একটি নতুন অ্যাকাউন্ট খুলুন।');
+                    alert('❌ No account found with this phone number!\nPlease click "Register" to create a new account.');
                     switchAuth('reg');
                     document.getElementById('r-phone').value = phone;
                     return;
                 }
 
                 if(usersDB[phone].blocked) {
-                    alert('⚠️ আপনার অ্যাকাউন্টটি সাময়িকভাবে ব্লক করা হয়েছে। অ্যাডমিনের সাথে যোগাযোগ করুন।');
+                    alert('⚠️ Your account has been temporarily blocked. Please contact support.');
                     return;
                 }
 
                 if(usersDB[phone].pass !== pass) {
-                    alert('❌ ভুল পাসওয়ার্ড!\nআপনার দেওয়া পাসওয়ার্ডটি সঠিক নয়, অনুগ্রহ করে আবার চেষ্টা করুন।');
+                    alert('❌ Incorrect password! Please verify and try again.');
                     return;
                 }
 
                 currentUserPhone = phone;
                 localStorage.setItem(DB_PREFIX + 'CURRENT_USER', phone);
-                showToast('লগইন সফল হয়েছে!');
+                showToast('Login successful!');
                 nav('dashboard');
             }
         }
@@ -1852,56 +1834,110 @@
             switchAuth('login');
         }
 
-        // PRODUCTS LIST
+        // PRODUCTS LIST (ORIGINAL BASE PRICES & PROFITS)
         const PRODUCTS_LIST = [
-            { id: 1, name: 'Echo Dot', price: 450, profit: 49 },
-            { id: 2, name: 'Fire TV Stick', price: 900, profit: 121 },
-            { id: 3, name: 'Kindle Paper', price: 1500, profit: 215 },
-            { id: 4, name: 'Luna Controller', price: 2500, profit: 400 },
-            { id: 5, name: 'Studio Max', price: 5500, profit: 965 },
-            { id: 6, name: 'Echo Show Omni', price: 10000, profit: 2200 }
+            { id: 1, vip: 'VIP 1', name: 'Amazon Echo Dot', price: 450, profit: 49, rate: '10.88%', total365: '৳17,885', img: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=150&q=80' },
+            { id: 2, vip: 'VIP 2', name: 'Amazon Fire TV Stick', price: 900, profit: 121, rate: '13.44%', total365: '৳44,165', img: 'https://images.unsplash.com/photo-1507646227500-4d389b0012be?w=150&q=80' },
+            { id: 3, vip: 'VIP 3', name: 'Amazon Kindle Paperwhite', price: 1500, profit: 215, rate: '14.33%', total365: '৳78,475', img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=150&q=80' },
+            { id: 4, vip: 'VIP 4', name: 'Amazon Luna Controller', price: 2500, profit: 400, rate: '16.00%', total365: '৳1,46,000', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150&q=80' },
+            { id: 5, vip: 'VIP 5', name: 'Amazon Studio Echo Max', price: 5500, profit: 965, rate: '17.55%', total365: '৳3,52,225', img: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=150&q=80' },
+            { id: 6, vip: 'VIP 6', name: 'Amazon Echo Show Omni', price: 10000, profit: 2200, rate: '22.00%', total365: '৳8,03,000', img: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=150&q=80' }
         ];
 
         function renderProducts() {
+            const container = document.getElementById('products-container');
+            if(!container) return;
             const usersDB = getDB('USERS', {});
-            const curUser = usersDB[currentUserPhone];
-            if(!curUser) return;
+            const curUser = usersDB[currentUserPhone] || {};
+            const disc = getDiscountInfo();
+
+            const globalTimerTxt = document.getElementById('global-timer-txt');
+            if(globalTimerTxt) globalTimerTxt.textContent = disc.text;
+
+            let html = '';
+            PRODUCTS_LIST.forEach(p => {
+                const currentBuyPrice = disc.isActive ? (p.price - 20) : p.price;
+                const userInvestment = (curUser.investments && curUser.investments[p.id]) ? curUser.investments[p.id] : null;
+
+                html += `
+                <div class="prod-card">
+                    <div class="vip-top-badge">${p.vip}</div>
+                    <div class="prod-top">
+                        <div class="prod-img"><img src="${p.img}" alt="${p.name}"></div>
+                        <div class="prod-info">
+                            <h4>${p.name}</h4>
+                            <div class="price">
+                                ${disc.isActive ? `
+                                    <span style="font-size:11px;color:#94a3b8;text-decoration:line-through;margin-right:4px;">৳ ${p.price}.00</span>
+                                    <span style="color:#ff9900;font-size:14px;font-weight:800;">৳ ${currentBuyPrice}.00</span>
+                                    <span style="background:var(--rose);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:4px;">-৳20 OFF</span>
+                                ` : `<span>৳ ${p.price}.00</span>`}
+                            </div>
+                            <span style="font-size:9px;color:var(--text-muted)">Daily: ৳${p.profit}.00 (${p.rate})</span>
+                            ${disc.isActive ? `
+                                <div class="discount-timer-pill">
+                                    <i class="fa-regular fa-clock"></i> Sale Ends In: <strong>${disc.text}</strong>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="prod-stats">
+                        <div>Daily<strong>৳${p.profit}</strong></div>
+                        <div>Rate<strong style="color:var(--emerald)">${p.rate}</strong></div>
+                        <div>Total (365d)<strong style="color:var(--gold-text)">${p.total365}</strong></div>
+                    </div>
+                    <div id="p-act-${p.id}">
+                        ${!userInvestment ? `
+                            <button class="btn-gold" onclick="buy(${p.id})">
+                                <i class="fa-solid fa-cart-shopping"></i> Buy Stock Product (৳${currentBuyPrice})
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
 
             PRODUCTS_LIST.forEach(p => {
-                const wrap = document.getElementById(`p-act-${p.id}`);
-                if(!wrap) return;
-
-                if(!curUser.investments || !curUser.investments[p.id]) {
-                    if(timerIntervals[p.id]) clearInterval(timerIntervals[p.id]);
-                    wrap.innerHTML = `<button class="btn-gold" onclick="buy(${p.id},'${p.name}',${p.price},${p.profit})">Buy Stock Product</button>`;
-                } else {
+                if(curUser.investments && curUser.investments[p.id]) {
                     startTimer(p.id);
                 }
             });
         }
 
-        function buy(id, name, price, profit) {
+        function buy(id) {
             const usersDB = getDB('USERS', {});
             const curUser = usersDB[currentUserPhone];
             if(!curUser) return;
 
-            if(curUser.bal < price) {
-                showToast(`⚠️ ব্যালেন্স কম! প্রয়োজনীয় ৳${price} ডিপোজিট করুন।`);
-                document.getElementById('dep-val').value = price;
+            const p = PRODUCTS_LIST.find(x => x.id === id);
+            if(!p) return;
+
+            const disc = getDiscountInfo();
+            const currentBuyPrice = disc.isActive ? (p.price - 20) : p.price;
+
+            if(curUser.bal < currentBuyPrice) {
+                showToast(`⚠️ Insufficient balance! Please deposit ৳${currentBuyPrice}.`);
+                document.getElementById('dep-val').value = currentBuyPrice;
                 nav('deposit-select');
                 return;
             }
 
-            if(confirm(`৳${price} দিয়ে "${name}" স্টক করতে চান?`)) {
-                curUser.bal = +(curUser.bal - price).toFixed(2);
+            if(confirm(`Do you wish to stake "${p.name}" for ৳${currentBuyPrice}?`)) {
+                curUser.bal = +(curUser.bal - currentBuyPrice).toFixed(2);
                 if(!curUser.investments) curUser.investments = {};
-                curUser.investments[id] = { name, profit, exp: Date.now() + 24*3600*1000 };
+                curUser.investments[id] = { 
+                    name: p.name, 
+                    profit: p.profit, 
+                    exp: Date.now() + 24*3600*1000,
+                    status: 'active'
+                };
                 usersDB[currentUserPhone] = curUser;
                 setDB('USERS', usersDB);
                 
-                addTx('buy', `Product Bought (${name})`, `- ৳${price}`, 'approved');
+                addTx('buy', `Product Staked (${p.name})`, `- ৳${currentBuyPrice}`, 'approved');
                 syncUI();
-                showToast('🎉 সফলভাবে কেনা হয়েছে!');
+                showToast('🎉 Product successfully staked!');
             }
         }
 
@@ -1911,6 +1947,11 @@
             if(!curUser || !curUser.investments || !curUser.investments[id]) return;
 
             const p = curUser.investments[id];
+            if(p.status === 'paused') {
+                alert('⚠️ This product is currently suspended by administration. Profit claim is paused.');
+                return;
+            }
+
             curUser.bal = +(curUser.bal + p.profit).toFixed(2);
             p.exp = Date.now() + 24*3600*1000;
             addTx('profit', `Daily Profit (${p.name})`, `+ ৳${p.profit}`, 'approved');
@@ -1926,7 +1967,7 @@
             usersDB[currentUserPhone] = curUser;
             setDB('USERS', usersDB);
             syncUI();
-            showToast(`🎉 মুনাফা +৳${p.profit} যোগ হয়েছে!`);
+            showToast(`🎉 Profit +৳${p.profit} added to balance!`);
         }
 
         function startTimer(id) {
@@ -1937,6 +1978,12 @@
 
             if(timerIntervals[id]) clearInterval(timerIntervals[id]);
             const p = curUser.investments[id];
+
+            // If suspended by admin
+            if(p.status === 'paused') {
+                wrap.innerHTML = `<div style="background:rgba(244,63,94,0.15);color:var(--rose);border:1px solid rgba(244,63,94,0.3);padding:9px;border-radius:10px;text-align:center;font-size:11px;font-weight:700"><i class="fa-solid fa-circle-pause"></i> Staking Suspended by Admin</div>`;
+                return;
+            }
 
             function update() {
                 const diff = p.exp - Date.now();
@@ -1962,7 +2009,7 @@
         
         function goToPay() {
             const v = parseFloat(document.getElementById('dep-val').value);
-            if(!v || v < 450) { alert('সর্বনিম্ন ডিপোজিট ৳ 450'); return; }
+            if(!v || v < 430) { alert('Minimum deposit amount is ৳ 430'); return; }
             document.getElementById('pay-amt').textContent = `৳ ${v.toFixed(2)}`;
             nav('deposit-pay');
         }
@@ -1970,10 +2017,10 @@
         function submitDeposit() {
             const trx = document.getElementById('trx-id').value.trim();
             if(!trx || trx.length < 5) {
-                showToast('⚠️ সঠিক বিকাশ TrxID লিখুন!');
+                showToast('⚠️ Please enter a valid bKash TrxID!');
                 return;
             }
-            const v = parseFloat(document.getElementById('dep-val').value) || 450;
+            const v = parseFloat(document.getElementById('dep-val').value) || 430;
             
             document.getElementById('loading-overlay').style.display = 'flex';
             setTimeout(() => {
@@ -1986,7 +2033,7 @@
                 });
 
                 document.getElementById('trx-id').value = '';
-                showToast('ডিপোজিট রিকোয়েস্ট সফল হয়েছে!');
+                showToast('Deposit request submitted successfully!');
                 setTimeout(() => nav('dashboard'), 1000);
             }, 1800);
         }
@@ -1999,7 +2046,17 @@
             const settings = getDB('SETTINGS', { withdrawEnabled: true });
 
             if(!settings.withdrawEnabled) {
-                box.innerHTML = `<div class="box" style="text-align:center;border-color:var(--rose)"><h4 style="color:var(--rose)">Withdrawal Temporarily Closed</h4></div>`;
+                box.innerHTML = `<div class="box" style="text-align:center;border-color:var(--rose)"><h4 style="color:var(--rose)">Withdrawal Gateway Temporarily Closed</h4></div>`;
+                return;
+            }
+
+            if(curUser.withdrawAllowed === false) {
+                box.innerHTML = `
+                    <div class="box" style="text-align:center;border-color:var(--rose)">
+                        <i class="fa-solid fa-ban" style="font-size:32px;color:var(--rose);margin-bottom:8px"></i>
+                        <h4 style="color:var(--rose)">Withdrawal Suspended</h4>
+                        <p style="font-size:11px;color:var(--text-muted);margin:8px 0">Withdrawal functionality has been disabled for this account by customer support.</p>
+                    </div>`;
                 return;
             }
 
@@ -2009,22 +2066,22 @@
                     <div class="box" style="text-align:center">
                         <i class="fa-solid fa-lock" style="font-size:32px;color:var(--rose);margin-bottom:8px"></i>
                         <h4 style="font-size:14px;font-weight:800">Withdrawal Locked</h4>
-                        <p style="font-size:11px;color:var(--text-muted);margin:8px 0">উত্তোলন আনলক করতে প্রথমে যেকোনো একটি VIP পণ্য স্টক করুন।</p>
+                        <p style="font-size:11px;color:var(--text-muted);margin:8px 0">Please purchase and stake at least one VIP product to unlock withdrawals.</p>
                         <button class="btn-gold" onclick="nav('dashboard')">View Products</button>
                     </div>`;
             } else {
                 box.innerHTML = `
                     <div class="box">
                         <div class="input-group">
-                            <label>বিকাশ পার্সোনাল নম্বর</label>
+                            <label>bKash Personal Account Number</label>
                             <input type="tel" id="w-acc" placeholder="01XXXXXXXXX" style="width:100%;padding:11px;background:#080d1a;border:1.5px solid #e2136e;border-radius:10px;color:#fff;outline:none">
                         </div>
                         <div class="input-group">
-                            <label>উত্তোলনের পরিমাণ (Min ৳200)</label>
+                            <label>Withdrawal Amount (Min ৳150)</label>
                             <input type="number" id="w-amt" placeholder="৳ Amount" style="width:100%;padding:11px;background:#080d1a;border:1px solid var(--card-border);border-radius:10px;color:#fff;outline:none">
                         </div>
                         <div class="input-group">
-                            <label>৬ সংখ্যার পেমেন্ট পিন</label>
+                            <label>6-Digit Payment PIN</label>
                             <input type="password" id="w-pin" maxlength="6" placeholder="Enter PIN" style="width:100%;padding:11px;background:#080d1a;border:1px solid var(--card-border);border-radius:10px;color:#fff;outline:none">
                         </div>
                         <button class="btn-green" onclick="submitWithdraw()">Confirm bKash Withdrawal</button>
@@ -2039,10 +2096,15 @@
             const a = parseFloat(document.getElementById('w-amt').value);
             const pin = document.getElementById('w-pin').value.trim();
 
-            if(!acc || acc.length < 11) { alert('সঠিক ১১ ডিজিটের বিকাশ পার্সোনাল নম্বর দিন'); return; }
-            if(!a || a < 200) { alert('সর্বনিম্ন উত্তোলন ৳ 200'); return; }
-            if(a > curUser.bal) { alert('আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!'); return; }
-            if(pin !== curUser.pin) { alert('ভুল পেমেন্ট পিন!'); return; }
+            if(curUser.withdrawAllowed === false) {
+                alert('⚠️ Your account withdrawal is currently suspended. Please contact administration.');
+                return;
+            }
+
+            if(!acc || acc.length < 11) { alert('Please enter a valid 11-digit bKash Personal number.'); return; }
+            if(!a || a < 150) { alert('Minimum withdrawal amount is ৳ 150.'); return; }
+            if(a > curUser.bal) { alert('Insufficient balance in your account!'); return; }
+            if(pin !== curUser.pin) { alert('Incorrect payment PIN!'); return; }
 
             document.getElementById('loading-overlay').style.display = 'flex';
             setTimeout(() => {
@@ -2059,7 +2121,7 @@
                 });
 
                 syncUI();
-                showToast('উত্তোলন রিকোয়েস্ট জমা হয়েছে!');
+                showToast('Withdrawal request submitted successfully!');
                 setTimeout(() => nav('dashboard'), 1000);
             }, 1800);
         }
@@ -2073,7 +2135,6 @@
             document.getElementById('ref-code').textContent = code;
             document.getElementById('ref-my-id').textContent = curUser.idCode || '000000';
             
-            // Clean dynamic URL for GitHub Pages
             const baseUrl = window.location.origin.includes('github.io')
                 ? 'https://amazon1elite.github.io/amazon-elite-vip/'
                 : (window.location.origin + window.location.pathname);
@@ -2098,23 +2159,23 @@
                         </div>`;
                 }
             }
-            if(!memberCount) teamListWrap.innerHTML = 'এখনও কোনো মেম্বার যুক্ত হয়নি।';
+            if(!memberCount) teamListWrap.innerHTML = 'No team members registered yet.';
             document.getElementById('team-cnt').textContent = `${memberCount} Members`;
         }
 
-        function copyRef() { copyText(document.getElementById('ref-url').value, '✅ Amazon রেফারেল লিংক কপি হয়েছে!'); }
+        function copyRef() { copyText(document.getElementById('ref-url').value, '✅ Amazon referral link copied to clipboard!'); }
         function shareRefWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(document.getElementById('ref-url').value)}`, '_blank'); }
         function shareRefTelegram() { window.open(`https://t.me/share/url?url=${encodeURIComponent(document.getElementById('ref-url').value)}`, '_blank'); }
 
         // RANK TIERS
         const RANK_TIERS = [
-            { req: 1, bonus: 15 },
-            { req: 5, bonus: 100 },
-            { req: 10, bonus: 220 },
-            { req: 20, bonus: 450 },
-            { req: 50, bonus: 1250 },
-            { req: 100, bonus: 3000 },
-            { req: 150, bonus: 7500 },
+            { req: 1, bonus: 30 },
+            { req: 5, bonus: 180 },
+            { req: 10, bonus: 400 },
+            { req: 20, bonus: 1000 },
+            { req: 50, bonus: 3000 },
+            { req: 100, bonus: 7000 },
+            { req: 150, bonus: 10000 },
             { req: 200, bonus: 15000 }
         ];
 
@@ -2127,7 +2188,7 @@
                 }
             }
 
-            document.getElementById('rank-active-cnt').innerHTML = `${activeCount} <span style="font-size:16px;font-weight:700">জন</span>`;
+            document.getElementById('rank-active-cnt').innerHTML = `${activeCount} <span style="font-size:16px;font-weight:700">Members</span>`;
             const claimed = getDB('CLAIMED_RANKS_' + currentUserPhone, {});
             const container = document.getElementById('rank-items');
             container.innerHTML = '';
@@ -2137,22 +2198,22 @@
                 const canClaim = activeCount >= t.req;
                 const progressPct = Math.min(100, (activeCount / t.req) * 100);
 
-                let actionHtml = isClaimed ? `<div class="rank-btn-pill">ক্লেমড</div>` :
-                                 (canClaim ? `<button class="rank-btn-claim" onclick="claimRankBonus(${t.req}, ${t.bonus})">ক্লাইম</button>` :
-                                 `<div class="rank-btn-pill">আরও ${t.req - activeCount} জন</div>`);
+                let actionHtml = isClaimed ? `<div class="rank-btn-pill">Claimed</div>` :
+                                 (canClaim ? `<button class="rank-btn-claim" onclick="claimRankBonus(${t.req}, ${t.bonus})">Claim Reward</button>` :
+                                 `<div class="rank-btn-pill">${t.req - activeCount} More Needed</div>`);
 
                 container.innerHTML += `
                     <div class="rank-card-item">
                         <div class="rank-card-top">
                             <div style="display:flex;align-items:center;gap:12px">
                                 <div class="rank-trophy-box"><i class="fa-solid fa-trophy"></i></div>
-                                <div><h4 style="font-size:14px;color:#fff">${t.req} জন একটিভ মেম্বার</h4></div>
+                                <div><h4 style="font-size:14px;color:#fff">${t.req} Active Team Members</h4></div>
                             </div>
-                            <strong style="color:var(--emerald);font-size:16px">TK ${t.bonus}.00</strong>
+                            <strong style="color:var(--emerald);font-size:16px">৳ ${t.bonus}.00</strong>
                         </div>
                         <div class="rank-progress-bar"><div class="rank-progress-fill" style="width:${progressPct}%"></div></div>
                         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:2px">
-                            <span style="font-size:11px;color:var(--text-muted)">${Math.min(activeCount, t.req)}/${t.req} জন</span>
+                            <span style="font-size:11px;color:var(--text-muted)">${Math.min(activeCount, t.req)}/${t.req} Members</span>
                             ${actionHtml}
                         </div>
                     </div>`;
@@ -2169,8 +2230,8 @@
             usersDB[currentUserPhone].bal = +(usersDB[currentUserPhone].bal + bonus).toFixed(2);
             setDB('USERS', usersDB);
 
-            addTx('rank', `Rank Reward (${req} Active Members)`, `+ ৳${bonus}.00`, 'approved');
-            showToast(`🎉 ৳${bonus} র‍্যাঙ্ক বোনাস যোগ হয়েছে!`);
+            addTx('rank', `Rank Milestone Reward (${req} Active Members)`, `+ ৳${bonus}.00`, 'approved');
+            showToast(`🎉 ৳${bonus} Rank reward credited to balance!`);
             renderRank();
             syncUI();
         }
@@ -2179,7 +2240,7 @@
             const today = new Date().toDateString();
             const lastSign = localStorage.getItem(DB_PREFIX + 'LAST_SIGNIN_' + currentUserPhone);
             if(lastSign === today) {
-                alert("আজকের রিওয়ার্ড গ্রহণ করা হয়েছে!");
+                alert("You have already claimed today's daily sign-in reward!");
                 closeModal('m-signin');
                 return;
             }
@@ -2189,8 +2250,8 @@
             setDB('USERS', usersDB);
             localStorage.setItem(DB_PREFIX + 'LAST_SIGNIN_' + currentUserPhone, today);
 
-            addTx('bonus', 'Daily Sign-in Task', '+ ৳5.00', 'approved');
-            showToast('🎉 ফ্রি ৳৫.০০ রিওয়ার্ড ওয়ালেটে যোগ হয়েছে!');
+            addTx('bonus', 'Daily Sign-in Reward', '+ ৳5.00', 'approved');
+            showToast('🎉 Free ৳5.00 reward added to wallet!');
             closeModal('m-signin');
             syncUI();
         }
@@ -2202,22 +2263,22 @@
             if(type === 'password') {
                 const oldP = document.getElementById('old-p').value.trim();
                 const newP = document.getElementById('new-p').value.trim();
-                if(oldP !== curUser.pass) { alert('আগের পাসওয়ার্ড সঠিক নয়!'); return; }
-                if(newP.length < 6) { alert('নতুন পাসওয়ার্ড কমপক্ষে ৬ ডিজিট হতে হবে!'); return; }
+                if(oldP !== curUser.pass) { alert('Previous password is incorrect!'); return; }
+                if(newP.length < 6) { alert('New password must be at least 6 characters!'); return; }
                 curUser.pass = newP;
                 usersDB[currentUserPhone] = curUser;
                 setDB('USERS', usersDB);
-                showToast('✅ পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!');
+                showToast('✅ Password changed successfully!');
                 closeModal('m-pass');
             } else {
                 const oldPin = document.getElementById('old-pin').value.trim();
                 const newPin = document.getElementById('new-pin').value.trim();
-                if(oldPin !== curUser.pin) { alert('বর্তমান পিন সঠিক নয়!'); return; }
-                if(newPin.length !== 6) { alert('নতুন পিন অবশ্যই ৬ ডিজিট হতে হবে!'); return; }
+                if(oldPin !== curUser.pin) { alert('Current PIN is incorrect!'); return; }
+                if(newPin.length !== 6) { alert('New PIN must be exactly 6 digits!'); return; }
                 curUser.pin = newPin;
                 usersDB[currentUserPhone] = curUser;
                 setDB('USERS', usersDB);
-                showToast('✅ পেমেন্ট পিন আপডেট হয়েছে!');
+                showToast('✅ Payment PIN updated successfully!');
                 closeModal('m-pin');
             }
         }
@@ -2252,7 +2313,7 @@
             const userTx = allTx.filter(x => x.userPhone === currentUserPhone);
 
             if(!userTx.length) {
-                list.innerHTML = '<div style="text-align:center;padding:15px">কোনো ট্রানজেকশন তথ্য নেই।</div>';
+                list.innerHTML = '<div style="text-align:center;padding:15px">No transaction history found.</div>';
                 return;
             }
             list.innerHTML = '';
@@ -2287,13 +2348,16 @@
             settings.withdrawEnabled = !settings.withdrawEnabled;
             setDB('SETTINGS', settings);
             renderAdminPanel();
-            showToast(settings.withdrawEnabled ? 'Withdrawals Enabled' : 'Withdrawals Disabled');
+            showToast(settings.withdrawEnabled ? 'Global Withdrawals Enabled' : 'Global Withdrawals Disabled');
         }
 
         function renderAdminPanel() {
             const usersDB = getDB('USERS', {});
             const allTx = getDB('TRANSACTIONS', []);
             const settings = getDB('SETTINGS', { withdrawEnabled: true });
+
+            const searchInput = document.getElementById('adm-search-input');
+            const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
 
             const admWdTxt = document.getElementById('adm-wd-status-txt');
             if(admWdTxt) {
@@ -2315,8 +2379,17 @@
 
             // 1. DEPOSITS
             if(activeAdminTab === 'dep') {
-                const depTx = allTx.filter(x => x.type === 'deposit');
-                if(!depTx.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">কোনো ডিপোজিট তথ্য নেই।</div>'; return; }
+                let depTx = allTx.filter(x => x.type === 'deposit');
+                if(query) {
+                    depTx = depTx.filter(d => {
+                        const u = usersDB[d.userPhone] || {};
+                        return (u.name && u.name.toLowerCase().includes(query)) ||
+                               d.userPhone.includes(query) ||
+                               (d.trxId && d.trxId.toLowerCase().includes(query)) ||
+                               (u.idCode && u.idCode.includes(query));
+                    });
+                }
+                if(!depTx.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">No deposit records found.</div>'; return; }
                 depTx.forEach(d => {
                     const u = usersDB[d.userPhone] || {};
                     c.innerHTML += `
@@ -2344,8 +2417,17 @@
 
             // 2. WITHDRAWALS
             if(activeAdminTab === 'wd') {
-                const wdTx = allTx.filter(x => x.type === 'withdraw');
-                if(!wdTx.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">কোনো উত্তোলন রিকোয়েস্ট নেই।</div>'; return; }
+                let wdTx = allTx.filter(x => x.type === 'withdraw');
+                if(query) {
+                    wdTx = wdTx.filter(w => {
+                        const u = usersDB[w.userPhone] || {};
+                        return (u.name && u.name.toLowerCase().includes(query)) ||
+                               w.userPhone.includes(query) ||
+                               (w.targetNum && w.targetNum.includes(query)) ||
+                               (u.idCode && u.idCode.includes(query));
+                    });
+                }
+                if(!wdTx.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">No withdrawal requests found.</div>'; return; }
                 wdTx.forEach(w => {
                     const u = usersDB[w.userPhone] || {};
                     c.innerHTML += `
@@ -2371,49 +2453,65 @@
                 });
             }
 
-            // 3. USERS (SEPARATE FILE CARD FOR EACH REGISTERED USER)
+            // 3. USERS WITH SEARCH
             if(activeAdminTab === 'users') {
-                if(!userKeys.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">কোনো ইউজার নিবন্ধিত নেই।</div>'; return; }
-                
-                c.innerHTML += `<div style="font-size:11px;color:var(--gold-text);margin-bottom:8px;text-align:center;">✦ যেকোনো ইউজারের নামের উপর চাপ দিয়ে তার পূর্ণ ফাইল ও লেনদেন দেখুন ✦</div>`;
+                let filteredKeys = userKeys;
+                if(query) {
+                    filteredKeys = userKeys.filter(p => {
+                        const u = usersDB[p];
+                        return (u.name && u.name.toLowerCase().includes(query)) ||
+                               p.includes(query) ||
+                               (u.idCode && u.idCode.includes(query));
+                    });
+                }
 
-                userKeys.forEach(p => {
+                if(!filteredKeys.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">No registered users found.</div>'; return; }
+                
+                c.innerHTML += `<div style="font-size:11px;color:var(--gold-text);margin-bottom:8px;text-align:center;">✦ Tap any user to view file, manage products & permissions ✦</div>`;
+
+                filteredKeys.forEach(p => {
                     const u = usersDB[p];
-                    const userTx = allTx.filter(x => x.userPhone === p);
+                    const isWdOk = u.withdrawAllowed !== false;
+                    const prodCount = u.investments ? Object.keys(u.investments).length : 0;
 
                     c.innerHTML += `
                         <div class="admin-user-card" onclick="openUserDossier('${p}')">
                             <div class="admin-user-row">
                                 <strong style="color:#fff;font-size:13px"><i class="fa-solid fa-folder-open" style="color:var(--gold-text);margin-right:6px"></i> ${u.name}</strong>
-                                <span class="adm-badge ${u.blocked ? 'adm-badge-blocked' : 'adm-badge-active'}">${u.blocked ? 'BLOCKED' : 'ACTIVE'}</span>
+                                <div>
+                                    <span class="adm-badge" style="background:rgba(255,153,0,0.15);color:#ff9900;border:1px solid rgba(255,153,0,0.3);margin-right:4px;">PROD: ${prodCount}</span>
+                                    <span class="adm-badge ${isWdOk ? 'adm-badge-active' : 'adm-badge-blocked'}" style="margin-right:4px;">WD: ${isWdOk ? 'ON' : 'OFF'}</span>
+                                    <span class="adm-badge ${u.blocked ? 'adm-badge-blocked' : 'adm-badge-active'}">${u.blocked ? 'BLOCKED' : 'ACTIVE'}</span>
+                                </div>
                             </div>
                             <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:4px">
                                 <span>ID: <strong style="color:#38bdf8;font-family:'JetBrains Mono'">${u.idCode}</strong></span>
-                                <span>ব্যালেন্স: <strong style="color:var(--gold-text)">৳ ${Number(u.bal || 0).toFixed(2)}</strong></span>
+                                <span>Balance: <strong style="color:var(--gold-text)">৳ ${Number(u.bal || 0).toFixed(2)}</strong></span>
                             </div>
                             <div style="font-size:10px;color:#94a3b8;border-top:1px dashed rgba(255,255,255,0.08);padding-top:6px;margin-top:2px;display:flex;justify-content:space-between">
-                                <span>ফোন: ${u.phone}</span>
-                                <span style="color:var(--cyan)">ফাইল খুলতে ট্যাপ করুন &rarr;</span>
+                                <span>Phone: ${u.phone}</span>
+                                <span style="color:var(--cyan)">Tap to manage &rarr;</span>
                             </div>
                         </div>`;
                 });
             }
         }
 
-        // ================= USER DOSSIER (আলাদা ফাইল) পপআপ =================
+        // ================= USER DOSSIER (INDIVIDUAL FILE) =================
         function openUserDossier(phone) {
             const usersDB = getDB('USERS', {});
             const allTx = getDB('TRANSACTIONS', []);
             const u = usersDB[phone];
             if(!u) return;
 
+            const isWdAllowed = u.withdrawAllowed !== false;
             const userTx = allTx.filter(x => x.userPhone === phone);
             const userDeposits = userTx.filter(x => x.type === 'deposit');
             const userWithdraws = userTx.filter(x => x.type === 'withdraw');
 
             let depHtml = '';
             if(!userDeposits.length) {
-                depHtml = '<div style="font-size:10px;color:#94a3b8">কোনো ডিপোজিট হিস্টোরি নেই।</div>';
+                depHtml = '<div style="font-size:10px;color:#94a3b8">No deposit records.</div>';
             } else {
                 userDeposits.forEach(d => {
                     depHtml += `
@@ -2429,7 +2527,7 @@
 
             let wdHtml = '';
             if(!userWithdraws.length) {
-                wdHtml = '<div style="font-size:10px;color:#94a3b8">কোনো উইথড্র হিস্টোরি নেই।</div>';
+                wdHtml = '<div style="font-size:10px;color:#94a3b8">No withdrawal records.</div>';
             } else {
                 userWithdraws.forEach(w => {
                     wdHtml += `
@@ -2443,6 +2541,29 @@
                 });
             }
 
+            // Staked Products List and Management
+            let productsHtml = '';
+            const invKeys = u.investments ? Object.keys(u.investments) : [];
+            if(!invKeys.length) {
+                productsHtml = '<div style="font-size:10px;color:#94a3b8">No purchased products yet.</div>';
+            } else {
+                invKeys.forEach(pId => {
+                    const prod = u.investments[pId];
+                    const isProdActive = prod.status !== 'paused';
+                    productsHtml += `
+                        <div style="background:#090e1a;padding:8px 10px;border-radius:8px;margin-bottom:6px;font-size:11px;border:1px solid rgba(255,153,0,0.2);display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <strong style="color:#fff;display:block;">${prod.name || ('Product #' + pId)}</strong>
+                                <span style="font-size:9.5px;color:#94a3b8;">Daily: ৳${prod.profit} | Status: <strong style="color:${isProdActive ? 'var(--emerald)' : 'var(--rose)'}">${isProdActive ? 'ACTIVE' : 'PAUSED'}</strong></span>
+                            </div>
+                            <button class="adm-btn-toggle" style="background:${isProdActive ? '#e11d48' : 'var(--emerald)'};color:#fff;padding:5px 10px;font-size:9.5px;" onclick="adminToggleProduct('${u.phone}', '${pId}')">
+                                <i class="fa-solid fa-power-off"></i> ${isProdActive ? 'Pause' : 'Activate'}
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+
             const box = document.getElementById('m-user-dossier-content');
             box.innerHTML = `
                 <button class="modal-close" onclick="closeModal('m-user-dossier')"><i class="fa-solid fa-xmark"></i></button>
@@ -2451,62 +2572,98 @@
                         <i class="fa-solid fa-user-secret"></i>
                     </div>
                     <h3 style="font-size:16px;color:#fff">${u.name} (ID: ${u.idCode})</h3>
-                    <span style="font-size:10.5px;color:var(--text-muted)">রেজিস্ট্রেশন: ${u.registeredAt || 'N/A'}</span>
+                    <span style="font-size:10.5px;color:var(--text-muted)">Registered: ${u.registeredAt || 'N/A'}</span>
                 </div>
 
                 <div style="background:#080d1a;padding:10px;border-radius:10px;font-size:11px;margin-bottom:12px;border:1px solid rgba(255,153,0,0.25)">
                     <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">মোবাইল নম্বর:</span>
+                        <span style="color:#94a3b8">Mobile Number:</span>
                         <strong style="color:#fff;font-family:'JetBrains Mono'">${u.phone}</strong>
                     </div>
                     <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">লগইন পাসওয়ার্ড:</span>
+                        <span style="color:#94a3b8">Login Password:</span>
                         <strong style="color:var(--gold-text);font-family:'JetBrains Mono'">${u.pass}</strong>
                     </div>
                     <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">৬-সংখ্যার পেমেন্ট পিন:</span>
+                        <span style="color:#94a3b8">Payment PIN:</span>
                         <strong style="color:#38bdf8;font-family:'JetBrains Mono'">${u.pin}</strong>
                     </div>
                     <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                        <span style="color:#94a3b8">বর্তমান একাউন্ট ব্যালেন্স:</span>
+                        <span style="color:#94a3b8">Withdrawal Status:</span>
+                        <strong style="color:${isWdAllowed ? 'var(--emerald)' : 'var(--rose)'};font-weight:800">${isWdAllowed ? 'Enabled' : 'Disabled'}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                        <span style="color:#94a3b8">Account Balance:</span>
                         <strong style="color:var(--emerald);font-size:13px">৳ ${Number(u.bal || 0).toFixed(2)}</strong>
                     </div>
                     <div style="display:flex;justify-content:space-between">
-                        <span style="color:#94a3b8">রেফারেল ইনভাইট কোড:</span>
+                        <span style="color:#94a3b8">Invitation Code:</span>
                         <strong style="color:#ffc453">${u.inviteCode || 'N/A'}</strong>
                     </div>
                 </div>
 
+                <!-- USER'S PURCHASED PRODUCTS SECTION -->
                 <div style="margin-bottom:12px">
-                    <div style="font-size:11px;color:var(--emerald);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-wallet"></i> ডিপোজিট রেকর্ড সমূহ:</div>
-                    <div style="max-height:100px;overflow-y:auto">${depHtml}</div>
+                    <div style="font-size:11px;color:var(--gold-text);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-boxes-stacked"></i> Staked Products (${invKeys.length}):</div>
+                    <div style="max-height:110px;overflow-y:auto">${productsHtml}</div>
+                </div>
+
+                <div style="margin-bottom:12px">
+                    <div style="font-size:11px;color:var(--emerald);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-wallet"></i> Deposit Records:</div>
+                    <div style="max-height:75px;overflow-y:auto">${depHtml}</div>
                 </div>
 
                 <div style="margin-bottom:14px">
-                    <div style="font-size:11px;color:var(--rose);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-money-bill-transfer"></i> উইথড্র রেকর্ড সমূহ:</div>
-                    <div style="max-height:100px;overflow-y:auto">${wdHtml}</div>
+                    <div style="font-size:11px;color:var(--rose);font-weight:700;margin-bottom:4px"><i class="fa-solid fa-money-bill-transfer"></i> Withdrawal Records:</div>
+                    <div style="max-height:75px;overflow-y:auto">${wdHtml}</div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
                     <button class="adm-btn-toggle" style="background:#1e293b;color:var(--gold-text);border:1px solid var(--gold-text)" onclick="adminChangeUserBal('${u.phone}')">
-                        <i class="fa-solid fa-pen-to-square"></i> ব্যালেন্স এডিট
+                        <i class="fa-solid fa-pen-to-square"></i> Edit Balance
                     </button>
-                    <button class="adm-btn-toggle" style="background:${u.blocked ? 'var(--emerald)' : '#e11d48'};color:#fff" onclick="adminToggleBlockUser('${u.phone}')">
-                        <i class="fa-solid fa-user-lock"></i> ${u.blocked ? 'আনব্লক করুন' : 'ব্লক করুন'}
+                    <button class="adm-btn-toggle" style="background:${isWdAllowed ? '#e11d48' : 'var(--emerald)'};color:#fff" onclick="adminToggleUserWithdraw('${u.phone}')">
+                        <i class="fa-solid fa-money-bill-transfer"></i> ${isWdAllowed ? 'Disable WD' : 'Enable WD'}
                     </button>
                 </div>
+                <button class="adm-btn-toggle" style="width:100%;background:${u.blocked ? 'var(--emerald)' : '#e11d48'};color:#fff" onclick="adminToggleBlockUser('${u.phone}')">
+                    <i class="fa-solid fa-user-lock"></i> ${u.blocked ? 'Unblock User Account' : 'Block Entire Account'}
+                </button>
             `;
             openModal('m-user-dossier');
+        }
+
+        // Toggle User's Purchased Product (Pause / Activate)
+        function adminToggleProduct(phone, pId) {
+            const usersDB = getDB('USERS', {});
+            if(!usersDB[phone] || !usersDB[phone].investments || !usersDB[phone].investments[pId]) return;
+            const currentStatus = usersDB[phone].investments[pId].status || 'active';
+            usersDB[phone].investments[pId].status = (currentStatus === 'paused') ? 'active' : 'paused';
+            setDB('USERS', usersDB);
+            showToast(usersDB[phone].investments[pId].status === 'active' ? '✅ Product activated for user!' : '🚫 Product paused for user!');
+            openUserDossier(phone);
+            renderAdminPanel();
+            if(phone === currentUserPhone) syncUI();
+        }
+
+        function adminToggleUserWithdraw(phone) {
+            const usersDB = getDB('USERS', {});
+            if(!usersDB[phone]) return;
+            usersDB[phone].withdrawAllowed = (usersDB[phone].withdrawAllowed === false) ? true : false;
+            setDB('USERS', usersDB);
+            showToast(usersDB[phone].withdrawAllowed ? '✅ User withdrawal enabled' : '🚫 User withdrawal suspended');
+            openUserDossier(phone);
+            renderAdminPanel();
         }
 
         function adminChangeUserBal(phone) {
             const usersDB = getDB('USERS', {});
             if(!usersDB[phone]) return;
-            const newBal = prompt(`ইউজারের নতুন ব্যালেন্স নির্ধারণ করুন (বর্তমান: ৳${usersDB[phone].bal}):`, usersDB[phone].bal);
+            const newBal = prompt(`Enter new balance for user (Current: ৳${usersDB[phone].bal}):`, usersDB[phone].bal);
             if(newBal !== null && !isNaN(newBal)) {
                 usersDB[phone].bal = +(parseFloat(newBal).toFixed(2));
                 setDB('USERS', usersDB);
-                showToast('✅ ইউজারের ব্যালেন্স আপডেট হয়েছে!');
+                showToast('✅ User balance updated successfully!');
                 openUserDossier(phone);
                 renderAdminPanel();
                 if(phone === currentUserPhone) syncUI();
@@ -2518,7 +2675,7 @@
             if(!usersDB[phone]) return;
             usersDB[phone].blocked = !usersDB[phone].blocked;
             setDB('USERS', usersDB);
-            showToast(usersDB[phone].blocked ? '🚫 ইউজারকে ব্লক করা হয়েছে' : '✅ ইউজার আনব্লক হয়েছে');
+            showToast(usersDB[phone].blocked ? '🚫 Account blocked' : '✅ Account unblocked');
             openUserDossier(phone);
             renderAdminPanel();
         }
@@ -2534,7 +2691,7 @@
                     setDB('USERS', usersDB);
                 }
                 setDB('TRANSACTIONS', allTx);
-                showToast(`✅ ডিপোজিট অনুমোদিত!`);
+                showToast(`✅ Deposit approved!`);
                 renderAdminPanel();
                 syncUI();
             }
@@ -2546,7 +2703,7 @@
             if(tx && tx.status === 'pending') {
                 tx.status = 'approved';
                 setDB('TRANSACTIONS', allTx);
-                showToast(`✅ উত্তোলন অনুমোদিত!`);
+                showToast(`✅ Withdrawal approved & completed!`);
                 renderAdminPanel();
                 syncUI();
             }
@@ -2563,7 +2720,7 @@
                     setDB('USERS', usersDB);
                 }
                 setDB('TRANSACTIONS', allTx);
-                showToast(`❌ রিকোয়েস্ট বাতিল করা হয়েছে`);
+                showToast(`❌ Request rejected & refunded`);
                 renderAdminPanel();
                 syncUI();
             }
@@ -2579,6 +2736,16 @@
             }
         }, 3400);
 
+        // REALTIME TICKER FOR 48-HOUR SPECIAL DISCOUNT TIMER
+        setInterval(() => {
+            const disc = getDiscountInfo();
+            const globalTimerTxt = document.getElementById('global-timer-txt');
+            if(globalTimerTxt) globalTimerTxt.textContent = disc.text;
+            document.querySelectorAll('.discount-timer-pill strong').forEach(el => {
+                el.textContent = disc.text;
+            });
+        }, 1000);
+
         // INITIALIZE ON LOAD
         window.onload = function() {
             renderTxList();
@@ -2586,18 +2753,16 @@
             const savedUser = cleanPhone(localStorage.getItem(DB_PREFIX + 'CURRENT_USER') || '');
             const usersDB = getDB('USERS', {});
 
-            // রেফারেল লিংক থেকে ইনভাইট কোড অটো ইনসার্ট
             const pendingInviteCode = sessionStorage.getItem('AMZN_PENDING_REF_CODE') || '';
             if(pendingInviteCode) {
                 const inviteBox = document.getElementById('r-invite');
                 if(inviteBox) inviteBox.value = pendingInviteCode;
                 nav('auth');
                 switchAuth('reg');
-                showToast('🎉 রেফারেল কোড যুক্ত হয়েছে! অ্যাকাউন্ট খুলুন');
+                showToast('🎉 Referral code attached! Please register');
                 return;
             }
 
-            // যদি আগে থেকে লগইন করা থাকে তবে সরাসরি ড্যাশবোর্ডে যাবে
             if(savedUser && usersDB[savedUser] && !usersDB[savedUser].blocked) {
                 currentUserPhone = savedUser;
                 nav('dashboard');
