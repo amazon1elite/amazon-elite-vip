@@ -26,6 +26,8 @@
             --rose: #f43f5e;
             --cyan: #06b6d4;
             --purple: #8b5cf6;
+            --bkash: #e2136e;
+            --nagad: #f7921e;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --text-sub: #64748b;
@@ -329,6 +331,76 @@
             line-height: 1.5;
         }
         .policy strong { color: var(--gold-text); }
+
+        /* PAYMENT METHOD CARDS (DEPOSIT & WITHDRAW) */
+        .pay-method-card {
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.25s;
+            background: rgba(10, 15, 26, 0.85);
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .pay-method-card:hover {
+            transform: translateY(-2px);
+        }
+        .pay-method-card.active-bkash {
+            border-color: #e2136e;
+            background: linear-gradient(135deg, rgba(226, 19, 110, 0.15) 0%, rgba(10, 15, 26, 0.95) 100%);
+            box-shadow: 0 0 16px rgba(226, 19, 110, 0.3);
+        }
+        .pay-method-card.active-nagad {
+            border-color: #f7921e;
+            background: linear-gradient(135deg, rgba(247, 146, 30, 0.15) 0%, rgba(10, 15, 26, 0.95) 100%);
+            box-shadow: 0 0 16px rgba(247, 146, 30, 0.3);
+        }
+        .method-check {
+            margin-left: auto;
+            font-size: 16px;
+            display: none;
+        }
+        .pay-method-card.active-bkash .method-check { display: block; color: #e2136e; }
+        .pay-method-card.active-nagad .method-check { display: block; color: #f7921e; }
+
+        /* WITHDRAW METHOD TOGGLE */
+        .wd-method-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .wd-method-btn {
+            padding: 12px 10px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: #090e1a;
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .wd-method-btn.active-bkash {
+            border-color: #e2136e;
+            background: linear-gradient(135deg, rgba(226, 19, 110, 0.2) 0%, rgba(10, 15, 26, 0.95) 100%);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(226, 19, 110, 0.35);
+        }
+        .wd-method-btn.active-nagad {
+            border-color: #f7921e;
+            background: linear-gradient(135deg, rgba(247, 146, 30, 0.2) 0%, rgba(10, 15, 26, 0.95) 100%);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(247, 146, 30, 0.35);
+        }
 
         /* PRODUCT CARDS */
         .prod-card {
@@ -1038,7 +1110,7 @@
                     <i class="fa-brands fa-amazon"></i> <span id="dash-brand-title">Amazon</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:6px">
-                    <!-- LANGUAGE TOGGLE BUTTON (DEFAULT: ENGLISH) -->
+                    <!-- LANGUAGE TOGGLE BUTTON -->
                     <button class="lang-toggle-btn" onclick="toggleLanguage()" title="Switch Language">
                         <i class="fa-solid fa-globe"></i>
                         <span id="lang-indicator">EN</span>
@@ -1102,7 +1174,7 @@
             <div class="box" style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                     <h4 style="color:var(--gold-text);font-size:13px;font-weight:700">Wallet Recharge</h4>
-                    <p style="font-size:10px;color:var(--text-muted)">Select amount and proceed with Send Money</p>
+                    <p style="font-size:10px;color:var(--text-muted)">Select amount and preferred payment method</p>
                 </div>
                 <div class="wallet-pill"><span class="u-bal">৳ 0.00</span></div>
             </div>
@@ -1122,18 +1194,33 @@
                 <span style="font-size:11px;color:#ff9900;display:block;margin-top:8px;font-weight:700;text-align:center">Minimum Recharge Amount: ৳ 430.00</span>
             </div>
 
-            <div class="box" style="border:1.5px solid #e2136e;display:flex;align-items:center;gap:12px">
-                <div style="width:36px;height:36px;background:#e2136e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff">bK</div>
-                <div>
-                    <h5 style="font-size:13px;font-weight:700">bKash Personal Send Money</h5>
-                    <p style="font-size:9px;color:var(--text-muted)">Manual TrxID Verification Gateway</p>
+            <!-- PAYMENT METHOD SELECTION (bKash & Nagad) -->
+            <div class="box">
+                <div class="box-title"><i class="fa-solid fa-credit-card"></i> Select Gateway Method</div>
+                
+                <div id="method-card-bkash" class="pay-method-card active-bkash" onclick="selectDepositMethod('bKash')">
+                    <div style="width:38px;height:38px;background:#e2136e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff">bK</div>
+                    <div>
+                        <h5 style="font-size:13px;font-weight:800;color:#fff">bKash Personal Send Money</h5>
+                        <p style="font-size:9.5px;color:var(--text-muted)">Instant TrxID Verification Gateway</p>
+                    </div>
+                    <i class="fa-solid fa-circle-check method-check"></i>
+                </div>
+
+                <div id="method-card-nagad" class="pay-method-card" onclick="selectDepositMethod('Nagad')">
+                    <div style="width:38px;height:38px;background:linear-gradient(135deg,#f7921e,#ea1d24);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff">নগদ</div>
+                    <div>
+                        <h5 style="font-size:13px;font-weight:800;color:#fff">Nagad Personal Send Money</h5>
+                        <p style="font-size:9.5px;color:var(--text-muted)">Instant TrxID Verification Gateway</p>
+                    </div>
+                    <i class="fa-solid fa-circle-check method-check"></i>
                 </div>
             </div>
 
             <button class="btn-gold" onclick="goToPay()">Proceed to Payment <i class="fa-solid fa-arrow-right"></i></button>
         </div>
 
-        <!-- ================= 4. DEPOSIT PAY VIEW (BKASH) ================= -->
+        <!-- ================= 4. DEPOSIT PAY VIEW (DYNAMIC BKASH & NAGAD) ================= -->
         <div id="view-deposit-pay" class="view">
             <div class="top-navbar" style="margin:-16px -16px 0 -16px">
                 <button class="back-btn" onclick="nav('deposit-select')"><i class="fa-solid fa-arrow-left"></i></button>
@@ -1141,9 +1228,9 @@
                 <div style="width:34px"></div>
             </div>
 
-            <div class="box" style="background:linear-gradient(135deg,#e2136e,#9d0a4c);color:#fff;display:flex;justify-content:space-between;align-items:center">
+            <div id="pay-header-banner" class="box" style="background:linear-gradient(135deg,#e2136e,#9d0a4c);color:#fff;display:flex;justify-content:space-between;align-items:center">
                 <div>
-                    <h4 style="font-size:14px;font-weight:800">bKash Personal</h4>
+                    <h4 id="pay-method-title" style="font-size:14px;font-weight:800">bKash Personal</h4>
                     <span style="font-size:10px;opacity:0.9">Send Money Gateway</span>
                 </div>
                 <div style="text-align:right">
@@ -1153,16 +1240,18 @@
             </div>
 
             <div class="box" style="text-align:center">
-                <div style="font-size:12px;margin-bottom:10px;color:#cbd5e1">Send money to the bKash personal number and input the TrxID below:</div>
+                <div id="pay-method-instruction" style="font-size:12px;margin-bottom:10px;color:#cbd5e1">
+                    Send money to the bKash personal number and input the TrxID below:
+                </div>
                 
                 <div style="display:flex;justify-content:space-between;align-items:center;background:#080d1a;border:1px solid var(--gold-text);padding:10px 14px;border-radius:12px;margin-bottom:14px">
-                    <strong id="bk-num" style="font-size:17px;letter-spacing:1px;color:#fff">01400207481</strong>
-                    <button class="btn-gold" style="width:auto;padding:6px 14px;font-size:11px" onclick="copyText('01400207481','✅ bKash number copied to clipboard!')">
+                    <strong id="gw-num" style="font-size:17px;letter-spacing:1px;color:#fff">01400207481</strong>
+                    <button class="btn-gold" style="width:auto;padding:6px 14px;font-size:11px" onclick="copyGatewayNum()">
                         <i class="fa-regular fa-copy"></i> Copy
                     </button>
                 </div>
 
-                <div style="text-align:left;font-size:11px;color:var(--gold-text);font-weight:700;margin-bottom:6px">
+                <div id="pay-trx-label" style="text-align:left;font-size:11px;color:var(--gold-text);font-weight:700;margin-bottom:6px">
                     Enter Send Money TrxID:
                 </div>
                 <input type="text" id="trx-id" placeholder="e.g. BLA49X2M9P" style="width:100%;padding:12px;background:#080d1a;border:2px solid #e2136e;border-radius:10px;color:#fff;text-align:center;font-size:14px;font-weight:800;letter-spacing:1px;margin-bottom:14px;outline:none">
@@ -1184,7 +1273,7 @@
             <div id="w-content"></div>
 
             <div class="policy">
-                <strong>Withdrawal Policy:</strong> Operating Hours: 12:00 PM – 08:00 PM. Payments are processed exclusively to bKash Personal accounts. <strong>Minimum withdrawal: ৳150.00</strong>. An 11% platform handling fee applies.
+                <strong>Withdrawal Policy:</strong> Operating Hours: 12:00 PM – 08:00 PM. Payments are processed to verified bKash or Nagad Personal numbers. <strong>Minimum withdrawal: ৳150.00</strong>. An 11% platform handling fee applies.
             </div>
         </div>
 
@@ -1547,7 +1636,6 @@
         }
 
         // ================= LANGUAGE TOGGLE SYSTEM =================
-        // Default language is English. Users can switch to Bengali anytime.
         let currentLang = localStorage.getItem(DB_PREFIX + 'LANG') || 'EN';
 
         function toggleLanguage() {
@@ -1587,6 +1675,7 @@
                 if(secTitle) secTitle.textContent = 'VIP Product Staking & Profit';
             }
             renderProducts();
+            if(document.getElementById('view-withdraw').style.display === 'flex') renderWithdraw();
         }
 
         // 48-Hour Special Discount Engine (20 Tk Off on All Products)
@@ -1618,6 +1707,8 @@
         let currentUserPhone = cleanPhone(localStorage.getItem(DB_PREFIX + 'CURRENT_USER') || '');
         let activeAdminTab = 'dep';
         let timerIntervals = {};
+        let selectedDepositMethod = 'bKash';
+        let selectedWithdrawMethod = 'bKash';
 
         function generateUniqueIdCode(usersDB) {
             let id;
@@ -1995,7 +2086,7 @@
 
             if(confirm(`Do you wish to stake "${p.name}" for ৳${currentBuyPrice}?`)) {
                 curUser.bal = +(Number(curUser.bal || 0) - currentBuyPrice).toFixed(2);
-                if(!curUser.investments) curUser.investments = {};
+                if(!curUser.investments || typeof curUser.investments !== 'object') curUser.investments = {};
                 curUser.investments[id] = { 
                     name: p.name, 
                     profit: p.profit, 
@@ -2068,7 +2159,17 @@
             timerIntervals[id] = setInterval(update, 1000);
         }
 
-        // DEPOSIT CONTROLLER
+        // ================= DEPOSIT CONTROLLER (BKASH & NAGAD) =================
+        function selectDepositMethod(method) {
+            selectedDepositMethod = method;
+            const bCard = document.getElementById('method-card-bkash');
+            const nCard = document.getElementById('method-card-nagad');
+            if(bCard && nCard) {
+                bCard.classList.toggle('active-bkash', method === 'bKash');
+                nCard.classList.toggle('active-nagad', method === 'Nagad');
+            }
+        }
+
         function setAmt(a) {
             document.getElementById('dep-val').value = a;
             document.querySelectorAll('.dep-quick-btn').forEach(b => {
@@ -2079,14 +2180,41 @@
         function goToPay() {
             const v = parseFloat(document.getElementById('dep-val').value);
             if(!v || v < 430) { alert('Minimum deposit amount is ৳ 430'); return; }
+            
             document.getElementById('pay-amt').textContent = `৳ ${v.toFixed(2)}`;
+            
+            const banner = document.getElementById('pay-header-banner');
+            const title = document.getElementById('pay-method-title');
+            const inst = document.getElementById('pay-method-instruction');
+            const trxInput = document.getElementById('trx-id');
+            const trxLabel = document.getElementById('pay-trx-label');
+            
+            if(selectedDepositMethod === 'Nagad') {
+                banner.style.background = 'linear-gradient(135deg, #f7921e, #ea1d24)';
+                title.textContent = 'Nagad Personal';
+                inst.textContent = 'Send money to the Nagad personal number and input the TrxID below:';
+                trxInput.style.borderColor = '#f7921e';
+                trxLabel.textContent = 'Enter Nagad Send Money TrxID:';
+            } else {
+                banner.style.background = 'linear-gradient(135deg, #e2136e, #9d0a4c)';
+                title.textContent = 'bKash Personal';
+                inst.textContent = 'Send money to the bKash personal number and input the TrxID below:';
+                trxInput.style.borderColor = '#e2136e';
+                trxLabel.textContent = 'Enter bKash Send Money TrxID:';
+            }
+            
             nav('deposit-pay');
+        }
+
+        function copyGatewayNum() {
+            const num = document.getElementById('gw-num').textContent;
+            copyText(num, `✅ ${selectedDepositMethod} number copied to clipboard!`);
         }
 
         function submitDeposit() {
             const trx = document.getElementById('trx-id').value.trim();
             if(!trx || trx.length < 5) {
-                showToast('⚠️ Please enter a valid bKash TrxID!');
+                showToast(`⚠️ Please enter a valid ${selectedDepositMethod} TrxID!`);
                 return;
             }
             const v = parseFloat(document.getElementById('dep-val').value) || 430;
@@ -2095,19 +2223,25 @@
             setTimeout(() => {
                 document.getElementById('loading-overlay').style.display = 'none';
 
-                addTx('deposit', `bKash Deposit (Trx: ${trx})`, `+ ৳${v}`, 'pending', {
+                addTx('deposit', `${selectedDepositMethod} Deposit (Trx: ${trx})`, `+ ৳${v}`, 'pending', {
                     userPhone: currentUserPhone,
                     amountNum: v,
-                    trxId: trx
+                    trxId: trx,
+                    method: selectedDepositMethod
                 });
 
                 document.getElementById('trx-id').value = '';
-                showToast('Deposit request submitted successfully!');
+                showToast(`${selectedDepositMethod} deposit request submitted successfully!`);
                 setTimeout(() => nav('dashboard'), 1000);
             }, 1800);
         }
 
-        // WITHDRAW CONTROLLER
+        // ================= WITHDRAW CONTROLLER (BKASH & NAGAD) =================
+        function setWithdrawMethod(m) {
+            selectedWithdrawMethod = m;
+            renderWithdraw();
+        }
+
         function renderWithdraw() {
             const box = document.getElementById('w-content');
             const usersDB = getDB('USERS', {});
@@ -2141,9 +2275,20 @@
             } else {
                 box.innerHTML = `
                     <div class="box">
+                        <div class="wd-method-grid">
+                            <button type="button" class="wd-method-btn ${selectedWithdrawMethod === 'bKash' ? 'active-bkash' : ''}" onclick="setWithdrawMethod('bKash')">
+                                <span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#e2136e;color:#fff;font-size:10px;line-height:20px;text-align:center;font-weight:800">bK</span>
+                                <span>bKash Personal</span>
+                            </button>
+                            <button type="button" class="wd-method-btn ${selectedWithdrawMethod === 'Nagad' ? 'active-nagad' : ''}" onclick="setWithdrawMethod('Nagad')">
+                                <span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#f7921e,#ea1d24);color:#fff;font-size:10px;line-height:20px;text-align:center;font-weight:800">ন</span>
+                                <span>Nagad Personal</span>
+                            </button>
+                        </div>
+
                         <div class="input-group">
-                            <label>bKash Personal Account Number</label>
-                            <input type="tel" id="w-acc" placeholder="01XXXXXXXXX" style="width:100%;padding:11px;background:#080d1a;border:1.5px solid #e2136e;border-radius:10px;color:#fff;outline:none">
+                            <label>${selectedWithdrawMethod} Personal Account Number</label>
+                            <input type="tel" id="w-acc" placeholder="01XXXXXXXXX" style="width:100%;padding:11px;background:#080d1a;border:1.5px solid ${selectedWithdrawMethod === 'Nagad' ? '#f7921e' : '#e2136e'};border-radius:10px;color:#fff;outline:none">
                         </div>
                         <div class="input-group">
                             <label>Withdrawal Amount (Min ৳150)</label>
@@ -2153,7 +2298,9 @@
                             <label>6-Digit Payment PIN</label>
                             <input type="password" id="w-pin" maxlength="6" placeholder="Enter PIN" style="width:100%;padding:11px;background:#080d1a;border:1px solid var(--card-border);border-radius:10px;color:#fff;outline:none">
                         </div>
-                        <button class="btn-green" onclick="submitWithdraw()">Confirm bKash Withdrawal</button>
+                        <button class="btn-green" style="${selectedWithdrawMethod === 'Nagad' ? 'background:linear-gradient(135deg, #f7921e, #ea1d24)' : ''}" onclick="submitWithdraw()">
+                            Confirm ${selectedWithdrawMethod} Withdrawal
+                        </button>
                     </div>`;
             }
         }
@@ -2170,7 +2317,7 @@
                 return;
             }
 
-            if(!acc || acc.length < 11) { alert('Please enter a valid 11-digit bKash Personal number.'); return; }
+            if(!acc || acc.length < 11) { alert(`Please enter a valid 11-digit ${selectedWithdrawMethod} Personal number.`); return; }
             if(!a || a < 150) { alert('Minimum withdrawal amount is ৳ 150.'); return; }
             if(a > Number(curUser.bal || 0)) { alert('Insufficient balance in your account!'); return; }
             if(pin !== curUser.pin) { alert('Incorrect payment PIN!'); return; }
@@ -2183,14 +2330,15 @@
                 usersDB[currentUserPhone] = curUser;
                 setDB('USERS', usersDB);
 
-                addTx('withdraw', `Withdrawal to bKash (${acc})`, `- ৳${a}`, 'pending', {
+                addTx('withdraw', `Withdrawal to ${selectedWithdrawMethod} (${acc})`, `- ৳${a}`, 'pending', {
                     userPhone: currentUserPhone,
                     amountNum: a,
-                    targetNum: acc
+                    targetNum: acc,
+                    method: selectedWithdrawMethod
                 });
 
                 syncUI();
-                showToast('Withdrawal request submitted successfully!');
+                showToast(`${selectedWithdrawMethod} withdrawal request submitted successfully!`);
                 setTimeout(() => nav('dashboard'), 1000);
             }, 1800);
         }
@@ -2455,12 +2603,16 @@
                         return (u.name && u.name.toLowerCase().includes(query)) ||
                                (d.userPhone && d.userPhone.includes(query)) ||
                                (d.trxId && d.trxId.toLowerCase().includes(query)) ||
-                               (u.idCode && u.idCode.includes(query));
+                               (u.idCode && u.idCode.includes(query)) ||
+                               (d.method && d.method.toLowerCase().includes(query));
                     });
                 }
                 if(!depTx.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">No deposit records found.</div>'; return; }
                 depTx.forEach(d => {
                     const u = usersDB[d.userPhone] || {};
+                    const method = d.method || (d.title && d.title.includes('Nagad') ? 'Nagad' : 'bKash');
+                    const isNagad = method === 'Nagad';
+
                     c.innerHTML += `
                         <div class="admin-user-card" style="border-left-color:${d.status === 'pending' ? 'var(--gold-text)' : d.status === 'approved' ? 'var(--emerald)' : 'var(--rose)'}">
                             <div class="admin-user-row">
@@ -2468,7 +2620,12 @@
                                 <span style="color:var(--gold-text);font-weight:800">${d.amount}</span>
                             </div>
                             <div style="background:#070b14;padding:8px;border-radius:8px;font-size:10px">
-                                <div>TrxID: <strong style="color:#38bdf8">${d.trxId || 'N/A'}</strong></div>
+                                <div style="margin-bottom:3px">
+                                    <span class="adm-badge" style="background:${isNagad ? 'rgba(247,146,30,0.2)' : 'rgba(226,19,110,0.2)'};color:${isNagad ? '#f7921e' : '#e2136e'};border:1px solid ${isNagad ? '#f7921e' : '#e2136e'};margin-right:6px">
+                                        ${method}
+                                    </span>
+                                    TrxID: <strong style="color:#38bdf8">${d.trxId || 'N/A'}</strong>
+                                </div>
                                 <div>Time: ${d.date} at ${d.time} | Status: <strong style="color:#fff">${d.status.toUpperCase()}</strong></div>
                             </div>
                             ${d.status === 'pending' ? `
@@ -2493,12 +2650,16 @@
                         return (u.name && u.name.toLowerCase().includes(query)) ||
                                (w.userPhone && w.userPhone.includes(query)) ||
                                (w.targetNum && w.targetNum.includes(query)) ||
-                               (u.idCode && u.idCode.includes(query));
+                               (u.idCode && u.idCode.includes(query)) ||
+                               (w.method && w.method.toLowerCase().includes(query));
                     });
                 }
                 if(!wdTx.length) { c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">No withdrawal requests found.</div>'; return; }
                 wdTx.forEach(w => {
                     const u = usersDB[w.userPhone] || {};
+                    const method = w.method || (w.title && w.title.includes('Nagad') ? 'Nagad' : 'bKash');
+                    const isNagad = method === 'Nagad';
+
                     c.innerHTML += `
                         <div class="admin-user-card" style="border-left-color:var(--rose)">
                             <div class="admin-user-row">
@@ -2506,8 +2667,13 @@
                                 <span style="color:var(--rose);font-weight:800">${w.amount}</span>
                             </div>
                             <div style="background:#070b14;padding:8px;border-radius:8px;font-size:10px">
-                                <div>bKash: <strong style="color:var(--gold-text)">${w.targetNum}</strong></div>
-                                <div>Status: ${w.status.toUpperCase()}</div>
+                                <div>
+                                    <span class="adm-badge" style="background:${isNagad ? 'rgba(247,146,30,0.2)' : 'rgba(226,19,110,0.2)'};color:${isNagad ? '#f7921e' : '#e2136e'};border:1px solid ${isNagad ? '#f7921e' : '#e2136e'};margin-right:6px">
+                                        ${method}
+                                    </span>
+                                    Target: <strong style="color:var(--gold-text)">${w.targetNum}</strong>
+                                </div>
+                                <div style="margin-top:3px">Status: ${w.status.toUpperCase()}</div>
                             </div>
                             ${w.status === 'pending' ? `
                             <div class="adm-action-grid">
@@ -2569,13 +2735,12 @@
             }
         }
 
-        // ================= USER DOSSIER (INDIVIDUAL FILE) - CRASH-PROOF & FIXED =================
+        // ================= USER DOSSIER (INDIVIDUAL FILE) =================
         function openUserDossier(phoneKey) {
             try {
                 const usersDB = getDB('USERS', {});
                 const allTx = getDB('TRANSACTIONS', []);
 
-                // Find user by key or phone
                 let u = usersDB[phoneKey];
                 let actualPhone = phoneKey;
 
@@ -2606,10 +2771,11 @@
                     depHtml = '<div style="font-size:10px;color:#94a3b8">No deposit records.</div>';
                 } else {
                     userDeposits.forEach(d => {
+                        const m = d.method || (d.title && d.title.includes('Nagad') ? 'Nagad' : 'bKash');
                         depHtml += `
                             <div style="background:#090e1a;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-size:10px;border-left:2px solid var(--emerald)">
                                 <div style="display:flex;justify-content:space-between">
-                                    <strong style="color:#34d399">${d.amount || '0'}</strong>
+                                    <strong style="color:#34d399">[${m}] ${d.amount || '0'}</strong>
                                     <span style="color:#cbd5e1">${d.date || ''} (${d.time || ''})</span>
                                 </div>
                                 <div style="color:#94a3b8;font-size:9px">TrxID: ${d.trxId || 'N/A'} | Status: <strong>${(d.status || '').toUpperCase()}</strong></div>
@@ -2622,18 +2788,18 @@
                     wdHtml = '<div style="font-size:10px;color:#94a3b8">No withdrawal records.</div>';
                 } else {
                     userWithdraws.forEach(w => {
+                        const m = w.method || (w.title && w.title.includes('Nagad') ? 'Nagad' : 'bKash');
                         wdHtml += `
                             <div style="background:#090e1a;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-size:10px;border-left:2px solid var(--rose)">
                                 <div style="display:flex;justify-content:space-between">
-                                    <strong style="color:var(--rose)">${w.amount || '0'}</strong>
+                                    <strong style="color:var(--rose)">[${m}] ${w.amount || '0'}</strong>
                                     <span style="color:#cbd5e1">${w.date || ''} (${w.time || ''})</span>
                                 </div>
-                                <div style="color:#94a3b8;font-size:9px">bKash: ${w.targetNum || 'N/A'} | Status: <strong>${(w.status || '').toUpperCase()}</strong></div>
+                                <div style="color:#94a3b8;font-size:9px">Account: ${w.targetNum || 'N/A'} | Status: <strong>${(w.status || '').toUpperCase()}</strong></div>
                             </div>`;
                     });
                 }
 
-                // Staked Products List and Management (Safe iteration over objects or arrays with nulls)
                 let productsHtml = '';
                 let validProductCount = 0;
 
@@ -2641,7 +2807,7 @@
                     const invKeys = Object.keys(u.investments);
                     invKeys.forEach(pId => {
                         const prod = u.investments[pId];
-                        if(!prod || typeof prod !== 'object') return; // Skip nulls in array
+                        if(!prod || typeof prod !== 'object') return;
                         validProductCount++;
                         const isProdActive = prod.status !== 'paused';
                         productsHtml += `
