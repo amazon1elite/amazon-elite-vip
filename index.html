@@ -981,8 +981,8 @@
                 <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,153,0,0.25); border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
                     <i class="fa-solid fa-bolt" style="color:#ff9900; font-size:16px;"></i>
                     <div>
-                        <strong style="font-size:11px; color:#fff; display:block;">48-Hour Flash Sale</strong>
-                        <span style="font-size:9.5px; color:#94a3b8;">All VIP products are currently discounted by ৳20!</span>
+                        <strong style="font-size:11px; color:#fff; display:block;">2-Day Mega Flash Sale</strong>
+                        <span id="event-discount-desc" style="font-size:9.5px; color:#94a3b8;">All VIP products are currently discounted by ৳50!</span>
                     </div>
                 </div>
 
@@ -990,7 +990,7 @@
                     <i class="fa-solid fa-trophy" style="color:var(--emerald); font-size:16px;"></i>
                     <div>
                         <strong style="font-size:11px; color:#fff; display:block;">Direct Referral Rank Rewards</strong>
-                        <span style="font-size:9.5px; color:#94a3b8;">Earn up to ৳15,000 cash rewards for active team members!</span>
+                        <span id="event-rank-desc" style="font-size:9.5px; color:#94a3b8;">Earn up to ৳25,000 cash rewards for active team members!</span>
                     </div>
                 </div>
 
@@ -1144,14 +1144,14 @@
                 </div>
             </div>
 
-            <!-- 48-Hour Discount Notice Banner -->
+            <!-- 2-Day (48-Hour) ৳50 Special Discount Banner -->
             <div id="discount-banner" style="background: linear-gradient(135deg, rgba(225,29,72,0.18) 0%, rgba(255,153,0,0.18) 100%); border: 1.5px solid rgba(255,153,0,0.4); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <div style="width:36px; height:36px; border-radius:50%; background:var(--rose); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px;">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div>
-                        <h5 id="flash-sale-title" style="font-size:12.5px; font-weight:800; color:#fff;">FLASH SALE: ৳20 DISCOUNT ON ALL PRODUCTS!</h5>
+                        <h5 id="flash-sale-title" style="font-size:12.5px; font-weight:800; color:#fff;">FLASH SALE: ৳50 DISCOUNT ON ALL PRODUCTS!</h5>
                         <p style="font-size:10px; color:#cbd5e1; margin-top:2px;"><span id="flash-sale-sub">Offer expires in:</span> <strong id="global-timer-txt" style="color:var(--gold-text); font-family:'JetBrains Mono';">48:00:00</strong></p>
                     </div>
                 </div>
@@ -1182,16 +1182,16 @@
             <div class="box">
                 <div class="box-title"><i class="fa-solid fa-coins"></i> Choose Deposit Amount</div>
                 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-                    <button class="dep-quick-btn active" onclick="setAmt(430)">৳ 430</button>
-                    <button class="dep-quick-btn" onclick="setAmt(880)">৳ 880</button>
-                    <button class="dep-quick-btn" onclick="setAmt(1480)">৳ 1,480</button>
-                    <button class="dep-quick-btn" onclick="setAmt(2480)">৳ 2,480</button>
-                    <button class="dep-quick-btn" onclick="setAmt(5480)">৳ 5,480</button>
-                    <button class="dep-quick-btn" onclick="setAmt(9980)">৳ 9,980</button>
+                    <button class="dep-quick-btn active" onclick="setAmt(400)">৳ 400</button>
+                    <button class="dep-quick-btn" onclick="setAmt(850)">৳ 850</button>
+                    <button class="dep-quick-btn" onclick="setAmt(1450)">৳ 1,450</button>
+                    <button class="dep-quick-btn" onclick="setAmt(2450)">৳ 2,450</button>
+                    <button class="dep-quick-btn" onclick="setAmt(5450)">৳ 5,450</button>
+                    <button class="dep-quick-btn" onclick="setAmt(9950)">৳ 9,950</button>
                 </div>
                 
-                <input type="number" id="dep-val" class="deposit-amt-box" value="430">
-                <span style="font-size:11px;color:#ff9900;display:block;margin-top:8px;font-weight:700;text-align:center">Minimum Recharge Amount: ৳ 430.00</span>
+                <input type="number" id="dep-val" class="deposit-amt-box" value="400">
+                <span id="min-recharge-txt" style="font-size:11px;color:#ff9900;display:block;margin-top:8px;font-weight:700;text-align:center">Minimum Recharge Amount: ৳ 400.00</span>
             </div>
 
             <!-- PAYMENT METHOD SELECTION (bKash & Nagad) -->
@@ -1235,7 +1235,7 @@
                 </div>
                 <div style="text-align:right">
                     <span style="font-size:9px;opacity:0.9">Payable Amount:</span>
-                    <h3 id="pay-amt" style="font-size:17px;font-weight:800">৳ 430.00</h3>
+                    <h3 id="pay-amt" style="font-size:17px;font-weight:800">৳ 400.00</h3>
                 </div>
             </div>
 
@@ -1343,7 +1343,7 @@
             </div>
         </div>
 
-        <!-- ================= 7. RANK VIEW ================= -->
+        <!-- ================= 7. RANK VIEW (TIERS + REFRESHED COUNT MISSION SYSTEM) ================= -->
         <div id="view-rank" class="view">
             <div class="top-navbar" style="margin:-16px -16px 0 -16px">
                 <button class="back-btn" onclick="nav('dashboard')"><i class="fa-solid fa-chevron-left"></i></button>
@@ -1355,7 +1355,7 @@
                 <div class="rank-header-icon"><i class="fa-solid fa-user-group"></i></div>
                 <div>
                     <h2 style="font-size:26px;font-weight:800;color:#fff;font-family:'JetBrains Mono';" id="rank-active-cnt">0 <span style="font-size:16px;font-weight:700">Members</span></h2>
-                    <span style="font-size:11px;color:var(--text-muted);font-weight:600">Total Direct Active Referral Members</span>
+                    <span id="rank-header-sub" style="font-size:11px;color:var(--text-muted);font-weight:600">Total Direct Active Referral Members (Stock Purchased)</span>
                 </div>
             </div>
 
@@ -1656,30 +1656,45 @@
             const fsTitle = document.getElementById('flash-sale-title');
             const fsSub = document.getElementById('flash-sale-sub');
             const secTitle = document.getElementById('dash-sec-title');
+            const minRecharge = document.getElementById('min-recharge-txt');
+            const evDisc = document.getElementById('event-discount-desc');
+            const evRank = document.getElementById('event-rank-desc');
+            const rHeaderSub = document.getElementById('rank-header-sub');
 
             if(currentLang === 'BN') {
                 if(ticker) ticker.textContent = 'Amazon VIP প্ল্যাটফর্মে স্বাগতম! প্রতিদিন ভেরিফায়েড ই-কমার্স স্টকিংয়ের মাধ্যমে নিশ্চিত প্রফিট নিন।';
                 if(bDep) bDep.textContent = 'রিচার্জ';
                 if(bWd) bWd.textContent = 'উত্তোলন';
                 if(bTeam) bTeam.textContent = 'টিম';
-                if(fsTitle) fsTitle.textContent = 'ধামাকা অফার: প্রতিটি পণ্যে ২০ টাকা ছাড়!';
+                if(fsTitle) fsTitle.textContent = 'ধামাকা অফার: প্রতিটি পণ্যে ৫০ টাকা ছাড়!';
                 if(fsSub) fsSub.textContent = 'অফার শেষ হতে বাকি:';
                 if(secTitle) secTitle.textContent = 'VIP পণ্য স্টকিং ও প্রফিট';
+                if(minRecharge) minRecharge.textContent = 'সর্বনিম্ন রিচার্জ পরিমাণ: ৳ ৪০০.০০';
+                if(evDisc) evDisc.textContent = 'প্রতিটি ভিআইপি পণ্যে সরাসরি ৫০ টাকা বিশেষ ছাড়!';
+                if(evRank) evRank.textContent = 'সক্রিয় টিম সদস্য বানিয়ে জিতে নিন ২৫,০০০ টাকা পর্যন্ত ক্যাশ!';
+                if(rHeaderSub) rHeaderSub.textContent = 'মোট সরাসরি সক্রিয় রেফারেল সদস্য (পণ্য ক্রয়কারী)';
             } else {
                 if(ticker) ticker.textContent = 'Welcome to Amazon VIP Platform! Earn verified guaranteed e-commerce staking profits daily.';
                 if(bDep) bDep.textContent = 'Deposit';
                 if(bWd) bWd.textContent = 'Withdraw';
                 if(bTeam) bTeam.textContent = 'Team';
-                if(fsTitle) fsTitle.textContent = 'FLASH SALE: ৳20 DISCOUNT ON ALL PRODUCTS!';
+                if(fsTitle) fsTitle.textContent = 'FLASH SALE: ৳50 DISCOUNT ON ALL PRODUCTS!';
                 if(fsSub) fsSub.textContent = 'Offer expires in:';
                 if(secTitle) secTitle.textContent = 'VIP Product Staking & Profit';
+                if(minRecharge) minRecharge.textContent = 'Minimum Recharge Amount: ৳ 400.00';
+                if(evDisc) evDisc.textContent = 'All VIP products are currently discounted by ৳50!';
+                if(evRank) evRank.textContent = 'Earn up to ৳25,000 cash rewards for active team members!';
+                if(rHeaderSub) rHeaderSub.textContent = 'Total Direct Active Referral Members (Stock Purchased)';
             }
             renderProducts();
             if(document.getElementById('view-withdraw').style.display === 'flex') renderWithdraw();
+            if(document.getElementById('view-rank').style.display === 'flex') renderRank();
         }
 
-        // 48-Hour Special Discount Engine (20 Tk Off on All Products)
-        const DISCOUNT_DURATION_MS = 48 * 60 * 60 * 1000;
+        // 2-Day (48-Hour) Special ৳50 Discount Engine
+        const DISCOUNT_AMOUNT = 50;
+        const DISCOUNT_DURATION_MS = 48 * 60 * 60 * 1000; // 48 Hours = 2 Days
+
         function getDiscountInfo() {
             let settings = getDB('SETTINGS', { withdrawEnabled: true });
             if(!settings.discountStartTime) {
@@ -2017,7 +2032,7 @@
 
             let html = '';
             PRODUCTS_LIST.forEach(p => {
-                const currentBuyPrice = disc.isActive ? (p.price - 20) : p.price;
+                const currentBuyPrice = disc.isActive ? (p.price - DISCOUNT_AMOUNT) : p.price;
                 const userInvestment = (curUser.investments && curUser.investments[p.id]) ? curUser.investments[p.id] : null;
 
                 html += `
@@ -2031,26 +2046,26 @@
                                 ${disc.isActive ? `
                                     <span style="font-size:11px;color:#94a3b8;text-decoration:line-through;margin-right:4px;">৳ ${p.price}.00</span>
                                     <span style="color:#ff9900;font-size:14px;font-weight:800;">৳ ${currentBuyPrice}.00</span>
-                                    <span style="background:var(--rose);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:4px;">-৳20 OFF</span>
+                                    <span style="background:var(--rose);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:4px;">-${currentLang === 'BN' ? '৫০ টাকা ছাড়' : '৳50 OFF'}</span>
                                 ` : `<span>৳ ${p.price}.00</span>`}
                             </div>
-                            <span style="font-size:9px;color:var(--text-muted)">Daily: ৳${p.profit}.00 (${p.rate})</span>
+                            <span style="font-size:9px;color:var(--text-muted)">${currentLang === 'BN' ? 'দৈনিক' : 'Daily'}: ৳${p.profit}.00 (${p.rate})</span>
                             ${disc.isActive ? `
                                 <div class="discount-timer-pill">
-                                    <i class="fa-regular fa-clock"></i> Sale Ends In: <strong>${disc.text}</strong>
+                                    <i class="fa-regular fa-clock"></i> ${currentLang === 'BN' ? 'ছাড়ের বাকি সময়:' : 'Sale Ends In:'} <strong>${disc.text}</strong>
                                 </div>
                             ` : ''}
                         </div>
                     </div>
                     <div class="prod-stats">
-                        <div>Daily<strong>৳${p.profit}</strong></div>
-                        <div>Rate<strong style="color:var(--emerald)">${p.rate}</strong></div>
-                        <div>Total (365d)<strong style="color:var(--gold-text)">${p.total365}</strong></div>
+                        <div>${currentLang === 'BN' ? 'দৈনিক' : 'Daily'}<strong>৳${p.profit}</strong></div>
+                        <div>${currentLang === 'BN' ? 'হার' : 'Rate'}<strong style="color:var(--emerald)">${p.rate}</strong></div>
+                        <div>${currentLang === 'BN' ? 'মোট (৩৬৫ দিন)' : 'Total (365d)'}<strong style="color:var(--gold-text)">${p.total365}</strong></div>
                     </div>
                     <div id="p-act-${p.id}">
                         ${!userInvestment ? `
                             <button class="btn-gold" onclick="buy(${p.id})">
-                                <i class="fa-solid fa-cart-shopping"></i> Buy Stock Product (৳${currentBuyPrice})
+                                <i class="fa-solid fa-cart-shopping"></i> ${currentLang === 'BN' ? 'পণ্য স্টক করুন' : 'Buy Stock Product'} (৳${currentBuyPrice})
                             </button>
                         ` : ''}
                     </div>
@@ -2075,7 +2090,7 @@
             if(!p) return;
 
             const disc = getDiscountInfo();
-            const currentBuyPrice = disc.isActive ? (p.price - 20) : p.price;
+            const currentBuyPrice = disc.isActive ? (p.price - DISCOUNT_AMOUNT) : p.price;
 
             if(Number(curUser.bal || 0) < currentBuyPrice) {
                 showToast(`⚠️ Insufficient balance! Please deposit ৳${currentBuyPrice}.`);
@@ -2148,7 +2163,7 @@
             function update() {
                 const diff = p.exp - Date.now();
                 if(diff <= 0) {
-                    wrap.innerHTML = `<button class="btn-green" onclick="claimProfit(${id})"><i class="fa-solid fa-gift"></i> CLAIM PROFIT (৳${p.profit})</button>`;
+                    wrap.innerHTML = `<button class="btn-green" onclick="claimProfit(${id})"><i class="fa-solid fa-gift"></i> ${currentLang === 'BN' ? 'মুনাফা গ্রহণ করুন' : 'CLAIM PROFIT'} (৳${p.profit})</button>`;
                     clearInterval(timerIntervals[id]);
                 } else {
                     const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
@@ -2179,7 +2194,7 @@
         
         function goToPay() {
             const v = parseFloat(document.getElementById('dep-val').value);
-            if(!v || v < 430) { alert('Minimum deposit amount is ৳ 430'); return; }
+            if(!v || v < 400) { alert('Minimum deposit amount is ৳ 400'); return; }
             
             document.getElementById('pay-amt').textContent = `৳ ${v.toFixed(2)}`;
             
@@ -2217,7 +2232,7 @@
                 showToast(`⚠️ Please enter a valid ${selectedDepositMethod} TrxID!`);
                 return;
             }
-            const v = parseFloat(document.getElementById('dep-val').value) || 430;
+            const v = parseFloat(document.getElementById('dep-val').value) || 400;
             
             document.getElementById('loading-overlay').style.display = 'flex';
             setTimeout(() => {
@@ -2384,71 +2399,155 @@
         function shareRefWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(document.getElementById('ref-url').value)}`, '_blank'); }
         function shareRefTelegram() { window.open(`https://t.me/share/url?url=${encodeURIComponent(document.getElementById('ref-url').value)}`, '_blank'); }
 
-        // RANK TIERS
+        // ================= RANK TIERS (10 MISSIONS WITH FRESH SEQUENTIAL COUNTING) =================
         const RANK_TIERS = [
-            { req: 1, bonus: 30 },
-            { req: 5, bonus: 180 },
-            { req: 10, bonus: 400 },
-            { req: 20, bonus: 1000 },
-            { req: 50, bonus: 3000 },
-            { req: 100, bonus: 7000 },
-            { req: 150, bonus: 10000 },
-            { req: 200, bonus: 15000 }
+            { mission: 1, req: 1, bonus: 100 },
+            { mission: 2, req: 3, bonus: 320 },
+            { mission: 3, req: 5, bonus: 550 },
+            { mission: 4, req: 10, bonus: 1100 },
+            { mission: 5, req: 20, bonus: 2200 },
+            { mission: 6, req: 50, bonus: 4500 },
+            { mission: 7, req: 100, bonus: 9500 },
+            { mission: 8, req: 150, bonus: 14000 },
+            { mission: 9, req: 200, bonus: 19000 },
+            { mission: 10, req: 300, bonus: 25000 }
         ];
+
+        // Safe direct active referral counter (Strictly counts only referrals who purchased stock products)
+        function getActiveReferralCount(phone, usersDB) {
+            let count = 0;
+            for(let p in usersDB) {
+                if(usersDB[p] && usersDB[p].leader === phone) {
+                    const inv = usersDB[p].investments;
+                    if(inv && typeof inv === 'object') {
+                        const keys = Object.keys(inv).filter(k => inv[k]);
+                        if(keys.length > 0) count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        function getUserClaimedMissions(curUser) {
+            if(!curUser) return {};
+            if(!curUser.claimedRankMissions || typeof curUser.claimedRankMissions !== 'object') {
+                const local = getDB('CLAIMED_RANKS_V2_' + (curUser.phone || currentUserPhone), {});
+                curUser.claimedRankMissions = local || {};
+            }
+            return curUser.claimedRankMissions;
+        }
 
         function renderRank() {
             const usersDB = getDB('USERS', {});
-            let activeCount = 0;
-            for(let p in usersDB) {
-                if(usersDB[p] && usersDB[p].leader === currentUserPhone) {
-                    if(usersDB[p].investments && Object.keys(usersDB[p].investments).length > 0) activeCount++;
-                }
+            const curUser = usersDB[currentUserPhone] || {};
+            const claimed = getUserClaimedMissions(curUser);
+
+            const totalActive = getActiveReferralCount(currentUserPhone, usersDB);
+
+            const activeCntEl = document.getElementById('rank-active-cnt');
+            if(activeCntEl) {
+                activeCntEl.innerHTML = `${totalActive} <span style="font-size:16px;font-weight:700">${currentLang === 'BN' ? 'জন' : 'Members'}</span>`;
             }
 
-            document.getElementById('rank-active-cnt').innerHTML = `${activeCount} <span style="font-size:16px;font-weight:700">Members</span>`;
-            const claimed = getDB('CLAIMED_RANKS_' + currentUserPhone, {});
             const container = document.getElementById('rank-items');
+            if(!container) return;
             container.innerHTML = '';
 
-            RANK_TIERS.forEach(t => {
-                const isClaimed = !!claimed[t.req];
-                const canClaim = activeCount >= t.req;
-                const progressPct = Math.min(100, (activeCount / t.req) * 100);
+            let prevReqSum = 0;
+            RANK_TIERS.forEach((m, idx) => {
+                const isClaimed = !!claimed[m.mission];
+                const prevClaimed = (idx === 0) ? true : !!claimed[m.mission - 1];
+                
+                // Available members counting fresh from 0 for this mission after previous missions consumed their quota
+                const availableForMission = Math.max(0, totalActive - prevReqSum);
+                const progress = isClaimed ? m.req : Math.min(availableForMission, m.req);
+                const progressPct = Math.min(100, (progress / m.req) * 100);
+                const canClaim = !isClaimed && prevClaimed && (availableForMission >= m.req);
 
-                let actionHtml = isClaimed ? `<div class="rank-btn-pill">Claimed</div>` :
-                                 (canClaim ? `<button class="rank-btn-claim" onclick="claimRankBonus(${t.req}, ${t.bonus})">Claim Reward</button>` :
-                                 `<div class="rank-btn-pill">${t.req - activeCount} More Needed</div>`);
+                let statusHtml = '';
+                if(isClaimed) {
+                    statusHtml = `<div class="rank-btn-pill" style="color:var(--emerald);border-color:var(--emerald);font-weight:800"><i class="fa-solid fa-check"></i> ${currentLang === 'BN' ? 'ক্লেমড' : 'Claimed'}</div>`;
+                } else if(canClaim) {
+                    statusHtml = `<button class="rank-btn-claim" onclick="claimRankMission(${m.mission})">${currentLang === 'BN' ? 'ক্লাইম করুন' : 'Claim Reward'}</button>`;
+                } else if(!prevClaimed) {
+                    statusHtml = `<div class="rank-btn-pill" style="opacity:0.6"><i class="fa-solid fa-lock"></i> ${currentLang === 'BN' ? `মিশন ${m.mission - 1} সম্পন্ন করুন` : `Mission ${m.mission - 1} First`}</div>`;
+                } else {
+                    const needed = m.req - progress;
+                    statusHtml = `<div class="rank-btn-pill">${needed} ${currentLang === 'BN' ? 'জন বাকি' : 'More Needed'}</div>`;
+                }
+
+                const missionTitle = currentLang === 'BN' ? `মিশন ${m.mission}: ${m.req} জন সক্রিয় সদস্য` : `Mission ${m.mission}: ${m.req} Active Members`;
+                const subNotice = currentLang === 'BN' ? 'নতুন করে সম্পূর্ণ করতে হবে' : 'Fresh referrals required';
+                const progressText = `${progress}/${m.req} ${currentLang === 'BN' ? 'জন' : 'Members'}`;
 
                 container.innerHTML += `
-                    <div class="rank-card-item">
+                    <div class="rank-card-item" style="${canClaim ? 'border-color:rgba(255,153,0,0.55);box-shadow:0 0 16px rgba(255,153,0,0.22);' : ''}">
                         <div class="rank-card-top">
                             <div style="display:flex;align-items:center;gap:12px">
-                                <div class="rank-trophy-box"><i class="fa-solid fa-trophy"></i></div>
-                                <div><h4 style="font-size:14px;color:#fff">${t.req} Active Team Members</h4></div>
+                                <div class="rank-trophy-box" style="${isClaimed ? 'background:rgba(16,185,129,0.15);border-color:var(--emerald);color:var(--emerald);' : ''}">
+                                    <i class="fa-solid ${isClaimed ? 'fa-circle-check' : 'fa-trophy'}"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size:13.5px;color:#fff">${missionTitle}</h4>
+                                    <span style="font-size:10px;color:var(--text-muted)">${subNotice}</span>
+                                </div>
                             </div>
-                            <strong style="color:var(--emerald);font-size:16px">৳ ${t.bonus}.00</strong>
+                            <strong style="color:var(--emerald);font-size:16px">৳ ${m.bonus.toLocaleString('en-IN')}.00</strong>
                         </div>
                         <div class="rank-progress-bar"><div class="rank-progress-fill" style="width:${progressPct}%"></div></div>
                         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:2px">
-                            <span style="font-size:11px;color:var(--text-muted)">${Math.min(activeCount, t.req)}/${t.req} Members</span>
-                            ${actionHtml}
+                            <span style="font-size:11px;color:var(--text-muted)">${progressText}</span>
+                            ${statusHtml}
                         </div>
                     </div>`;
+
+                // Add to previous quota for next missions
+                prevReqSum += m.req;
             });
         }
 
-        function claimRankBonus(req, bonus) {
-            let claimed = getDB('CLAIMED_RANKS_' + currentUserPhone, {});
-            if(claimed[req]) return;
-            claimed[req] = true;
-            setDB('CLAIMED_RANKS_' + currentUserPhone, claimed);
-
+        function claimRankMission(missionNum) {
             const usersDB = getDB('USERS', {});
-            usersDB[currentUserPhone].bal = +(Number(usersDB[currentUserPhone].bal || 0) + bonus).toFixed(2);
-            setDB('USERS', usersDB);
+            const curUser = usersDB[currentUserPhone];
+            if(!curUser) return;
 
-            addTx('rank', `Rank Milestone Reward (${req} Active Members)`, `+ ৳${bonus}.00`, 'approved');
-            showToast(`🎉 ৳${bonus} Rank reward credited to balance!`);
+            if(!curUser.claimedRankMissions) curUser.claimedRankMissions = {};
+            if(curUser.claimedRankMissions[missionNum]) {
+                showToast(currentLang === 'BN' ? 'এই মিশনটি আগেই ক্লেইম করা হয়েছে!' : 'This mission has already been claimed!');
+                return;
+            }
+
+            const tierIdx = missionNum - 1;
+            const m = RANK_TIERS[tierIdx];
+            if(!m) return;
+
+            // Enforce sequential completion
+            if(tierIdx > 0 && !curUser.claimedRankMissions[missionNum - 1]) {
+                showToast(currentLang === 'BN' ? 'আগের মিশনটি প্রথমে সম্পন্ন করুন!' : 'Complete the previous mission first!');
+                return;
+            }
+
+            const totalActive = getActiveReferralCount(currentUserPhone, usersDB);
+            let prevReq = 0;
+            for(let k = 0; k < tierIdx; k++) {
+                prevReq += RANK_TIERS[k].req;
+            }
+
+            const available = totalActive - prevReq;
+            if(available < m.req) {
+                showToast(currentLang === 'BN' ? 'প্রয়োজনীয় সংখ্যক নতুন মেম্বার এখনো পূর্ণ হয়নি!' : 'Not enough new active members yet!');
+                return;
+            }
+
+            // Permanently record claim in user object (Synced to Firebase Cloud)
+            curUser.claimedRankMissions[missionNum] = true;
+            curUser.bal = +(Number(curUser.bal || 0) + m.bonus).toFixed(2);
+            usersDB[currentUserPhone] = curUser;
+            setDB('USERS', usersDB);
+            setDB('CLAIMED_RANKS_V2_' + currentUserPhone, curUser.claimedRankMissions);
+
+            addTx('rank', `Rank Mission ${missionNum} Reward (${m.req} Active Members)`, `+ ৳${m.bonus}.00`, 'approved');
+            showToast(`🎉 ৳${m.bonus} ${currentLang === 'BN' ? 'র‍্যাঙ্ক বোনাস ওয়ালেটে যোগ হয়েছে!' : 'Rank reward credited to balance!'}`);
             renderRank();
             syncUI();
         }
@@ -3004,7 +3103,7 @@
             }
         }, 3400);
 
-        // REALTIME TICKER FOR 48-HOUR SPECIAL DISCOUNT TIMER
+        // REALTIME TICKER FOR 2-DAY SPECIAL ৳50 DISCOUNT TIMER
         setInterval(() => {
             const disc = getDiscountInfo();
             const globalTimerTxt = document.getElementById('global-timer-txt');
